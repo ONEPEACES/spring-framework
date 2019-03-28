@@ -35,4 +35,5 @@ public @interface CustomStereotype {
 
 	String value() default "thoreau";
 
+
 }
