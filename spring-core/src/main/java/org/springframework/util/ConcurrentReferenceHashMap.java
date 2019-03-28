@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -179,10 +179,13 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		int size = 1 << this.shift;
 		this.referenceType = referenceType;
 		int roundedUpSegmentCapacity = (int) ((initialCapacity + size - 1L) / size);
-		this.segments = (Segment[]) Array.newInstance(Segment.class, size);
-		for (int i = 0; i < this.segments.length; i++) {
-			this.segments[i] = new Segment(roundedUpSegmentCapacity);
+		int initialSize = 1 << calculateShift(roundedUpSegmentCapacity, MAXIMUM_SEGMENT_SIZE);
+		Segment[] segments = (Segment[]) Array.newInstance(Segment.class, size);
+		int resizeThreshold = (int) (initialSize * getLoadFactor());
+		for (int i = 0; i < segments.length; i++) {
+			segments[i] = new Segment(initialSize, resizeThreshold);
 		}
+		this.segments = segments;
 	}
 
 
@@ -481,11 +484,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		 */
 		private int resizeThreshold;
 
-		public Segment(int initialCapacity) {
+		public Segment(int initialSize, int resizeThreshold) {
 			this.referenceManager = createReferenceManager();
-			this.initialSize = 1 << calculateShift(initialCapacity, MAXIMUM_SEGMENT_SIZE);
-			this.references = createReferenceArray(this.initialSize);
-			this.resizeThreshold = (int) (this.references.length * getLoadFactor());
+			this.initialSize = initialSize;
+			this.references = createReferenceArray(initialSize);
+			this.resizeThreshold = resizeThreshold;
 		}
 
 		@Nullable
@@ -571,7 +574,8 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		 * @param allowResize if resizing is permitted
 		 */
 		protected final void restructureIfNecessary(boolean allowResize) {
-			boolean needsResize = (this.count > 0 && this.count >= this.resizeThreshold);
+			int currCount = this.count;
+			boolean needsResize = (currCount > 0 && currCount >= this.resizeThreshold);
 			Reference<K, V> ref = this.referenceManager.pollForPurge();
 			if (ref != null || (needsResize && allowResize)) {
 				lock();

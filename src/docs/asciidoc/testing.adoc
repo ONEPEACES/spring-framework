@@ -17,14 +17,16 @@ set up service locator registries and similar structures).
 
 
 
+
 [[testing-introduction]]
 == Introduction to Spring Testing
 
 Testing is an integral part of enterprise software development. This chapter focuses on
-the value added by the IoC principle to <<unit-testing,unit testing>> and on the benefits
-of the Spring Framework's support for <<integration-testing,integration testing>>. (A
+the value added by the IoC principle to <<unit-testing, unit testing>> and on the benefits
+of the Spring Framework's support for <<integration-testing, integration testing>>. (A
 thorough treatment of testing in the enterprise is beyond the scope of this reference
 manual.)
+
 
 
 
@@ -34,12 +36,12 @@ manual.)
 Dependency injection should make your code less dependent on the container than it would
 be with traditional Java EE development. The POJOs that make up your application should
 be testable in JUnit or TestNG tests, with objects instantiated by using the `new`
-operator, without Spring or any other container. You can use <<mock-objects,mock
-objects>> (in conjunction with other valuable testing techniques) to test your code in
-isolation. If you follow the architecture recommendations for Spring, the resulting clean
-layering and componentization of your codebase facilitate easier unit testing. For
-example, you can test service layer objects by stubbing or mocking DAO or repository
-interfaces, without needing to access persistent data while running unit tests.
+operator, without Spring or any other container. You can use <<mock-objects, mock objects>>
+(in conjunction with other valuable testing techniques) to test your code in isolation.
+If you follow the architecture recommendations for Spring, the resulting clean layering
+and componentization of your codebase facilitate easier unit testing. For example,
+you can test service layer objects by stubbing or mocking DAO or repository interfaces,
+without needing to access persistent data while running unit tests.
 
 True unit tests typically run extremely quickly, as there is no runtime infrastructure to
 set up. Emphasizing true unit tests as part of your development methodology can boost
@@ -61,17 +63,15 @@ Spring includes a number of packages dedicated to mocking:
 * <<mock-objects-web-reactive>>
 
 
-
 [[mock-objects-env]]
 ==== Environment
 
 The `org.springframework.mock.env` package contains mock implementations of the
 `Environment` and `PropertySource` abstractions (see
-<<core.adoc#beans-definition-profiles,Bean Definition Profiles>>
-and <<core.adoc#beans-property-source-abstraction,`PropertySource` Abstraction>>).
+<<core.adoc#beans-definition-profiles, Bean Definition Profiles>>
+and <<core.adoc#beans-property-source-abstraction, `PropertySource` Abstraction>>).
 `MockEnvironment` and `MockPropertySource` are useful for developing
 out-of-container tests for code that depends on environment-specific properties.
-
 
 
 [[mock-objects-jndi]]
@@ -82,7 +82,6 @@ which you can use to set up a simple JNDI environment for test suites or stand-a
 applications. If, for example, JDBC `DataSource` instances get bound to the same JNDI
 names in test code as they do in a Java EE container, you can reuse both application code
 and configuration in testing scenarios without modification.
-
 
 
 [[mock-objects-servlet]]
@@ -99,7 +98,6 @@ based on the Servlet 4.0 API.
 
 The Spring MVC Test framework builds on the mock Servlet API objects to provide an
 integration testing framework for Spring MVC. See <<spring-mvc-test-framework>>.
-
 
 
 [[mock-objects-web-reactive]]
@@ -136,7 +134,6 @@ categories:
 * <<unit-testing-spring-mvc>>
 
 
-
 [[unit-testing-utilities]]
 ==== General Testing Utilities
 
@@ -167,7 +164,6 @@ utilities, see {api-spring-framework}/aop/support/AopUtils.html[`AopUtils`] and
 {api-spring-framework}/aop/framework/AopProxyUtils.html[`AopProxyUtils`].
 
 
-
 [[unit-testing-spring-mvc]]
 ==== Spring MVC Testing Utilities
 
@@ -181,8 +177,9 @@ TIP: To unit test your Spring MVC `Controller` classes as POJOs, use `ModelAndVi
 combined with `MockHttpServletRequest`, `MockHttpSession`, and so on from Spring's
 <<mock-objects-servlet, Servlet API mocks>>. For thorough integration testing of your
 Spring MVC and REST `Controller` classes in conjunction with your `WebApplicationContext`
-configuration for Spring MVC, use the <<spring-mvc-test-framework,Spring MVC Test
-Framework>> instead.
+configuration for Spring MVC, use the
+<<spring-mvc-test-framework, Spring MVC Test Framework>> instead.
+
 
 
 
@@ -198,7 +195,6 @@ applications. It includes the following topics:
 * <<integration-testing-annotations>>
 * <<testcontext-framework>>
 * <<spring-mvc-test-framework>>
-* <<testing-examples-petclinic>>
 
 
 
@@ -216,17 +212,17 @@ Doing so lets you test things such as:
 The Spring Framework provides first-class support for integration testing in the
 `spring-test` module. The name of the actual JAR file might include the release version
 and might also be in the long `org.springframework.test` form, depending on where you get
-it from (see the <<core.adoc#dependency-management,section on Dependency Management>> for
-an explanation). This library includes the `org.springframework.test` package, which
+it from (see the <<core.adoc#dependency-management, section on Dependency Management>>
+for an explanation). This library includes the `org.springframework.test` package, which
 contains valuable classes for integration testing with a Spring container. This testing
 does not rely on an application server or other deployment environment. Such tests are
 slower to run than unit tests but much faster than the equivalent Selenium tests or
 remote tests that rely on deployment to an application server.
 
-In Spring 2.5 and later, unit and integration testing support is provided in the form of
-the annotation-driven <<testcontext-framework,Spring TestContext Framework>>. The
-TestContext framework is agnostic of the actual testing framework in use, which allows
-instrumentation of tests in various environments, including JUnit, TestNG, and others.
+Unit and integration testing support is provided in the form of the annotation-driven
+<<testcontext-framework, Spring TestContext Framework>>. The TestContext framework is
+agnostic of the actual testing framework in use, which allows instrumentation of tests
+in various environments, including JUnit, TestNG, and others.
 
 
 
@@ -235,15 +231,14 @@ instrumentation of tests in various environments, including JUnit, TestNG, and o
 
 Spring's integration testing support has the following primary goals:
 
-* To manage <<testing-ctx-management,Spring IoC container caching>> between tests.
-* To provide <<testing-fixture-di,Dependency Injection of test fixture instances>>.
-* To provide <<testing-tx,transaction management>> appropriate to integration testing.
-* To supply <<testing-support-classes,Spring-specific base classes>> that assist
+* To manage <<testing-ctx-management, Spring IoC container caching>> between tests.
+* To provide <<testing-fixture-di, Dependency Injection of test fixture instances>>.
+* To provide <<testing-tx, transaction management>> appropriate to integration testing.
+* To supply <<testing-support-classes, Spring-specific base classes>> that assist
   developers in writing integration tests.
 
 The next few sections describe each goal and provide links to implementation and
 configuration details.
-
 
 
 [[testing-ctx-management]]
@@ -299,9 +294,8 @@ integration tests that test the following areas:
 * The logic of the `HibernateTitleRepository`: Does the configured instance of this class
   perform as anticipated?
 
-See dependency injection of test fixtures with the <<testcontext-fixture-di,TestContext
-framework>>.
-
+See dependency injection of test fixtures with the
+<<testcontext-fixture-di, TestContext framework>>.
 
 
 [[testing-tx]]
@@ -326,8 +320,7 @@ particular test to populate or modify the database), you can tell the TestContex
 framework to cause the transaction to commit instead of roll back by using the
 <<integration-testing-annotations, `@Commit`>> annotation.
 
-See transaction management with the <<testcontext-tx,TestContext framework>>.
-
+See transaction management with the <<testcontext-tx, TestContext framework>>.
 
 
 [[testing-support-classes]]
@@ -344,12 +337,12 @@ which let you access:
   queries to confirm database state both before and after execution of database-related
   application code, and Spring ensures that such queries run in the scope of the same
   transaction as the application code. When used in conjunction with an ORM tool, be sure
-  to avoid <<testcontext-tx-false-positives,false positives>>.
+  to avoid <<testcontext-tx-false-positives, false positives>>.
 
 In addition, you may want to create your own custom, application-wide superclass with
 instance variables and methods specific to your project.
 
-See support classes for the <<testcontext-support-classes,TestContext framework>>.
+See support classes for the <<testcontext-support-classes, TestContext framework>>.
 
 
 
@@ -371,15 +364,15 @@ methods.
 
 [TIP]
 ====
-<<testcontext-support-classes-junit4,`AbstractTransactionalJUnit4SpringContextTests`>>
-and <<testcontext-support-classes-testng,`AbstractTransactionalTestNGSpringContextTests`>>
+<<testcontext-support-classes-junit4, `AbstractTransactionalJUnit4SpringContextTests`>>
+and <<testcontext-support-classes-testng, `AbstractTransactionalTestNGSpringContextTests`>>
 provide convenience methods that delegate to the aforementioned methods in
 `JdbcTestUtils`.
 
 The `spring-jdbc` module provides support for configuring and launching an embedded
-database, which you can use in integration tests that interact with a database. For
-details, see <<data-access.adoc#jdbc-embedded-database-support,Embedded Database
-Support>> and <<data-access.adoc#jdbc-embedded-database-dao-testing,Testing Data Access
+database, which you can use in integration tests that interact with a database.
+For details, see <<data-access.adoc#jdbc-embedded-database-support, Embedded Database
+Support>> and <<data-access.adoc#jdbc-embedded-database-dao-testing, Testing Data Access
 Logic with an Embedded Database>>.
 ====
 
@@ -388,8 +381,8 @@ Logic with an Embedded Database>>.
 [[integration-testing-annotations]]
 === Annotations
 
-This section covers annotations that you can use when you test Spring applications. It
-includes the following topics:
+This section covers annotations that you can use when you test Spring applications.
+It includes the following topics:
 
 * <<integration-testing-annotations-spring>>
 * <<integration-testing-annotations-standard>>
@@ -398,13 +391,12 @@ includes the following topics:
 * <<integration-testing-annotations-meta>>
 
 
-
 [[integration-testing-annotations-spring]]
 ==== Spring Testing Annotations
 
 The Spring Framework provides the following set of Spring-specific annotations that you
 can use in your unit and integration tests in conjunction with the TestContext framework.
-See the corresponding Javadoc for further information, including default attribute
+See the corresponding javadoc for further information, including default attribute
 values, attribute aliases, and other details.
 
 Spring's testing annotations include the following:
@@ -425,18 +417,13 @@ Spring's testing annotations include the following:
 * <<spring-testing-annotation-sqlconfig>>
 * <<spring-testing-annotation-sqlgroup>>
 
-
-
 [[spring-testing-annotation-bootstrapwith]]
 ===== `@BootstrapWith`
 
 `@BootstrapWith` is a class-level annotation that you can use to configure how the Spring
 TestContext Framework is bootstrapped. Specifically, you can use `@BootstrapWith` to
-specify a custom `TestContextBootstrapper`. See the
-<<testcontext-bootstrapping,Bootstrapping the TestContext framework>> section for further
-details.
-
-
+specify a custom `TestContextBootstrapper`. See the section on
+<<testcontext-bootstrapping, bootstrapping the TestContext framework>> for further details.
 
 [[spring-testing-annotation-contextconfiguration]]
 ===== `@ContextConfiguration`
@@ -521,8 +508,6 @@ configuration classes as well as context initializers that are declared by super
 See <<testcontext-ctx-management>> and the `@ContextConfiguration` javadocs for further
 details.
 
-
-
 [[spring-testing-annotation-webappconfiguration]]
 ===== `@WebAppConfiguration`
 
@@ -571,10 +556,8 @@ resource. The following example shows how to specify a classpath resource:
 Note that `@WebAppConfiguration` must be used in conjunction with
 `@ContextConfiguration`, either within a single test class or within a test class
 hierarchy. See the
-{api-spring-framework}/test/context/web/WebAppConfiguration.html[`@WebAppConfiguration`
-Javadoc] for further details.
-
-
+{api-spring-framework}/test/context/web/WebAppConfiguration.html[`@WebAppConfiguration`]
+javadoc for further details.
 
 [[spring-testing-annotation-contexthierarchy]]
 ===== `@ContextHierarchy`
@@ -617,10 +600,8 @@ If you need to merge or override the configuration for a given level of the cont
 hierarchy within a test class hierarchy, you must explicitly name that level by supplying
 the same value to the `name` attribute in `@ContextConfiguration` at each corresponding
 level in the class hierarchy. See <<testcontext-ctx-management-ctx-hierarchies>> and the
-{api-spring-framework}/test/context/ContextHierarchy.html[`@ContextHierarchy` Javadoc]
+{api-spring-framework}/test/context/ContextHierarchy.html[`@ContextHierarchy`] javadoc
 for further examples.
-
-
 
 [[spring-testing-annotation-activeprofiles]]
 ===== `@ActiveProfiles`
@@ -663,11 +644,11 @@ be active:
 NOTE: `@ActiveProfiles` provides support for inheriting active bean definition profiles
 declared by superclasses by default. You can also resolve active bean definition profiles
 programmatically by implementing a custom
-<<testcontext-ctx-management-env-profiles-ActiveProfilesResolver,`ActiveProfilesResolver`>>
+<<testcontext-ctx-management-env-profiles-ActiveProfilesResolver, `ActiveProfilesResolver`>>
 and registering it by using the `resolver` attribute of `@ActiveProfiles`.
 
 See <<testcontext-ctx-management-env-profiles>> and the
-{api-spring-framework}/test/context/ActiveProfiles.html[`@ActiveProfiles` Javadoc] for
+{api-spring-framework}/test/context/ActiveProfiles.html[`@ActiveProfiles`] javadoc for
 examples and further details.
 
 [[spring-testing-annotation-testpropertysource]]
@@ -714,8 +695,6 @@ The following example demonstrates how to declare inlined properties:
 ----
 <1> Declare `timezone` and `port` properties.
 ====
-
-
 
 [[spring-testing-annotation-dirtiescontext]]
 ===== `@DirtiesContext`
@@ -863,9 +842,8 @@ as the following example shows.
 ====
 
 For further details regarding the `EXHAUSTIVE` and `CURRENT_LEVEL` algorithms, see the
-{api-spring-framework}/test/annotation/DirtiesContext.HierarchyMode.html[`DirtiesContext.HierarchyMode` Javadoc].
-
-
+{api-spring-framework}/test/annotation/DirtiesContext.HierarchyMode.html[`DirtiesContext.HierarchyMode`]
+javadoc.
 
 [[spring-testing-annotation-testexecutionlisteners]]
 ===== `@TestExecutionListeners`
@@ -891,10 +869,8 @@ The following example shows how to register two `TestExecutionListener` implemen
 ====
 
 By default, `@TestExecutionListeners` supports inherited listeners. See the
-{api-spring-framework}/test/context/TestExecutionListeners.html[Javadoc] for an example
-and further details.
-
-
+{api-spring-framework}/test/context/TestExecutionListeners.html[javadoc]
+for an example and further details.
 
 [[spring-testing-annotation-commit]]
 ===== `@Commit`
@@ -919,8 +895,6 @@ The following example shows how to use the `@Commit` annotation:
 ----
 <1> Commit the result of the test to the database.
 ====
-
-
 
 [[spring-testing-annotation-rollback]]
 ===== `@Rollback`
@@ -951,8 +925,6 @@ result is committed to the database):
 ----
 <1> Do not roll back the result.
 ====
-
-
 
 [[spring-testing-annotation-beforetransaction]]
 ===== `@BeforeTransaction`
@@ -998,8 +970,6 @@ transaction by using Spring's `@Transactional` annotation. As of Spring Framewor
 <1> Run this method after a transaction.
 ====
 
-
-
 [[spring-testing-annotation-sql]]
 ===== `@Sql`
 
@@ -1022,8 +992,6 @@ it:
 
 See <<testcontext-executing-sql-declaratively>> for further details.
 
-
-
 [[spring-testing-annotation-sqlconfig]]
 ===== `@SqlConfig`
 
@@ -1045,8 +1013,6 @@ configured with the `@Sql` annotation. The following example shows how to use it
 ----
 <1> Set the comment prefix and the separator in SQL scripts.
 ====
-
-
 
 [[spring-testing-annotation-sqlgroup]]
 ===== `@SqlGroup`
@@ -1072,7 +1038,6 @@ annotation. The following example shows how to declare an SQL group:
 ----
 <1> Declare a group of SQL scripts.
 ====
-
 
 
 [[integration-testing-annotations-standard]]
@@ -1110,20 +1075,17 @@ you use test lifecycle callbacks from the underlying test framework instead of
 ====
 
 
-
 [[integration-testing-annotations-junit4]]
 ==== Spring JUnit 4 Testing Annotations
 
 The following annotations are supported only when used in conjunction with the
-<<testcontext-junit4-runner,SpringRunner>>, <<testcontext-junit4-rules,Spring's JUnit 4
-rules>>, or <<testcontext-support-classes-junit4,Spring's JUnit 4 support classes>>:
+<<testcontext-junit4-runner, SpringRunner>>, <<testcontext-junit4-rules, Spring's JUnit 4
+rules>>, or <<testcontext-support-classes-junit4, Spring's JUnit 4 support classes>>:
 
 * <<integration-testing-annotations-junit4-ifprofilevalue>>
 * <<integration-testing-annotations-junit4-profilevaluesourceconfiguration>>
 * <<integration-testing-annotations-junit4-timed>>
 * <<integration-testing-annotations-junit4-repeat>>
-
-
 
 [[integration-testing-annotations-junit4-ifprofilevalue]]
 ===== `@IfProfileValue`
@@ -1172,8 +1134,6 @@ Consider the following example:
 <1> Run this test for unit tests and integration tests.
 ====
 
-
-
 [[integration-testing-annotations-junit4-profilevaluesourceconfiguration]]
 ===== `@ProfileValueSourceConfiguration`
 
@@ -1194,8 +1154,6 @@ use `@ProfileValueSourceConfiguration`:
 ----
 <1> Use a custom profile value source.
 ====
-
-
 
 [[integration-testing-annotations-junit4-timed]]
 ===== `@Timed`
@@ -1227,8 +1185,6 @@ preemptively fails the test if the test takes too long. Spring's `@Timed`, on th
 hand, does not preemptively fail the test but rather waits for the test to complete
 before failing.
 
-
-
 [[integration-testing-annotations-junit4-repeat]]
 ===== `@Repeat`
 
@@ -1253,20 +1209,17 @@ how to use the `@Repeat` annotation:
 ====
 
 
-
 [[integration-testing-annotations-junit-jupiter]]
 ==== Spring JUnit Jupiter Testing Annotations
 
 The following annotations are supported only when used in conjunction with the
-<<testcontext-junit-jupiter-extension,`SpringExtension`>> and JUnit Jupiter (that is, the
-programming model in JUnit 5):
+<<testcontext-junit-jupiter-extension, `SpringExtension`>> and JUnit Jupiter
+(that is, the programming model in JUnit 5):
 
 * <<integration-testing-annotations-junit-jupiter-springjunitconfig>>
 * <<integration-testing-annotations-junit-jupiter-springjunitwebconfig>>
 * <<integration-testing-annotations-junit-jupiter-enabledif>>
 * <<integration-testing-annotations-junit-jupiter-disabledif>>
-
-
 
 [[integration-testing-annotations-junit-jupiter-springjunitconfig]]
 ===== `@SpringJUnitConfig`
@@ -1308,11 +1261,9 @@ location of a configuration file:
 <1> Specify the location of a configuration file.
 ====
 
-See <<testcontext-ctx-management>> as well as the
-{api-spring-framework}/test/context/junit/jupiter/SpringJUnitConfig.html[Javadoc for
-`@SpringJUnitConfig`] and `@ContextConfiguration` for further details.
-
-
+See <<testcontext-ctx-management>> as well as the javadoc for
+{api-spring-framework}/test/context/junit/jupiter/SpringJUnitConfig.html[`@SpringJUnitConfig`]
+and `@ContextConfiguration` for further details.
 
 [[integration-testing-annotations-junit-jupiter-springjunitwebconfig]]
 ===== `@SpringJUnitWebConfig`
@@ -1357,13 +1308,11 @@ the location of a configuration file:
 <1> Specify the location of a configuration file.
 ====
 
-See <<testcontext-ctx-management>> as well as the Javadoc for
+See <<testcontext-ctx-management>> as well as the javadoc for
 {api-spring-framework}/test/context/junit/jupiter/web/SpringJUnitWebConfig.html[`@SpringJUnitWebConfig`],
 {api-spring-framework}/test/context/ContextConfiguration.html[`@ContextConfiguration`], and
 {api-spring-framework}/test/context/web/WebAppConfiguration.html[`@WebAppConfiguration`]
 for further details.
-
-
 
 [[integration-testing-annotations-junit-jupiter-enabledif]]
 ===== `@EnabledIf`
@@ -1376,11 +1325,10 @@ within that class are automatically enabled by default as well.
 
 Expressions can be any of the following:
 
-* <<core.adoc#expressions,Spring Expression Language>> (SpEL) expression. For example:
+* <<core.adoc#expressions, Spring Expression Language>> (SpEL) expression. For example:
   `@EnabledIf("#{systemProperties['os.name'].toLowerCase().contains('mac')}")`
-* Placeholder for a property available in the Spring
-  <<core.adoc#beans-environment,`Environment`>>. For example:
-  `@EnabledIf("${smoke.tests.enabled}")`
+* Placeholder for a property available in the Spring <<core.adoc#beans-environment, `Environment`>>.
+  For example: `@EnabledIf("${smoke.tests.enabled}")`
 * Text literal. For example: `@EnabledIf("true")`
 
 Note, however, that a text literal that is not the result of dynamic resolution of a
@@ -1404,8 +1352,6 @@ example, you can create a custom `@EnabledOnMac` annotation as follows:
 ----
 ====
 
-
-
 [[integration-testing-annotations-junit-jupiter-disabledif]]
 ===== `@DisabledIf`
 
@@ -1417,11 +1363,10 @@ test methods within that class are automatically disabled as well.
 
 Expressions can be any of the following:
 
-* <<core.adoc#expressions,Spring Expression Language>> (SpEL) expression. For example:
+* <<core.adoc#expressions, Spring Expression Language>> (SpEL) expression. For example:
   `@DisabledIf("#{systemProperties['os.name'].toLowerCase().contains('mac')}")`
-* Placeholder for a property available in the Spring
-  <<core.adoc#beans-environment,`Environment`>>. For example:
-  `@DisabledIf("${smoke.tests.disabled}")`
+* Placeholder for a property available in the Spring <<core.adoc#beans-environment, `Environment`>>.
+  For example: `@DisabledIf("${smoke.tests.disabled}")`
 * Text literal. For example: `@DisabledIf("true")`
 
 Note, however, that a text literal that is not the result of dynamic resolution of a
@@ -1446,16 +1391,15 @@ example, you can create a custom `@DisabledOnMac` annotation as follows:
 ====
 
 
-
 [[integration-testing-annotations-meta]]
 ==== Meta-Annotation Support for Testing
 
 You can use most test-related annotations as
-<<core.adoc#beans-meta-annotations,meta-annotations>> to create custom composed
+<<core.adoc#beans-meta-annotations, meta-annotations>> to create custom composed
 annotations and reduce configuration duplication across a test suite.
 
 You can use each of the following as a meta-annotation in conjunction with the
-<<testcontext-framework,TestContext framework>>.
+<<testcontext-framework, TestContext framework>>.
 
 * `@BootstrapWith`
 * `@ContextConfiguration`
@@ -1652,11 +1596,10 @@ required to extend a particular class hierarchy, such as the `abstract` support 
 The following section provides an overview of the internals of the TestContext framework.
 If you are interested only in using the framework and are not interested in extending it
 with your own custom listeners or custom loaders, feel free to go directly to the
-configuration (<<testcontext-ctx-management,context management>>,
-<<testcontext-fixture-di,dependency injection>>, <<testcontext-tx,transaction
-management>>), <<testcontext-support-classes,support classes>>, and
-<<integration-testing-annotations,annotation support>> sections.
-
+configuration (<<testcontext-ctx-management, context management>>,
+<<testcontext-fixture-di, dependency injection>>, <<testcontext-tx,transaction
+management>>), <<testcontext-support-classes, support classes>>, and
+<<integration-testing-annotations, annotation support>> sections.
 
 
 [[testcontext-key-abstractions]]
@@ -1671,9 +1614,8 @@ in turn, manages a `TestContext` that holds the context of the current test. The
 and delegates to `TestExecutionListener` implementations, which instrument the actual
 test execution by providing dependency injection, managing transactions, and so on. A
 `SmartContextLoader` is responsible for loading an `ApplicationContext` for a given test
-class. See the {api-spring-framework}/test/context/package-summary.html[Javadoc] and the
+class. See the {api-spring-framework}/test/context/package-summary.html[javadoc] and the
 Spring test suite for further information and examples of various implementations.
-
 
 ===== `TestContext`
 
@@ -1681,8 +1623,6 @@ Spring test suite for further information and examples of various implementation
 actual testing framework in use) and provides context management and caching support for
 the test instance for which it is responsible. The `TestContext` also delegates to a
 `SmartContextLoader` to load an `ApplicationContext` if requested.
-
-
 
 ===== `TestContextManager`
 
@@ -1700,24 +1640,22 @@ responsible for managing a single `TestContext` and signaling events to each reg
 
 ===== `TestExecutionListener`
 
-`TestExecutionListener` defines the API for reacting to test-execution events published
-by the `TestContextManager` with which the listener is registered. See
-<<testcontext-tel-config>>.
+`TestExecutionListener` defines the API for reacting to test-execution events published by
+the `TestContextManager` with which the listener is registered. See <<testcontext-tel-config>>.
 
 ===== Context Loaders
 
-`ContextLoader` is a strategy interface that was introduced in Spring 2.5 for loading an
-`ApplicationContext` for an integration test managed by the Spring TestContext Framework.
-You should implement `SmartContextLoader` instead of this interface to provide support
-for annotated classes, active bean definition profiles, test property sources, context
-hierarchies, and `WebApplicationContext` support.
+`ContextLoader` is a strategy interface for loading an `ApplicationContext` for an
+integration test managed by the Spring TestContext Framework. You should implement
+`SmartContextLoader` instead of this interface to provide support for annotated classes,
+active bean definition profiles, test property sources, context hierarchies, and
+`WebApplicationContext` support.
 
 `SmartContextLoader` is an extension of the `ContextLoader` interface introduced in
-Spring 3.1. The `SmartContextLoader` SPI supersedes the `ContextLoader` SPI that was
-introduced in Spring 2.5. Specifically, a `SmartContextLoader` can choose to process
-resource locations, annotated classes, or context initializers. Furthermore, a
-`SmartContextLoader` can set active bean definition profiles and test property sources in
-the context that it loads.
+Spring 3.1, superseding the original minimal `ContextLoader` SPI. Specifically, a
+`SmartContextLoader` can choose to process resource locations, annotated classes,
+or context initializers. Furthermore, a `SmartContextLoader` can set active bean
+definition profiles and test property sources in the context that it loads.
 
 Spring provides the following implementations:
 
@@ -1774,7 +1712,6 @@ directly but rather to extend `AbstractTestContextBootstrapper` or one of its co
 subclasses instead.
 
 
-
 [[testcontext-tel-config]]
 ==== `TestExecutionListener` Configuration
 
@@ -1794,17 +1731,14 @@ by default, exactly in the following order:
 * `SqlScriptsTestExecutionListener`: Runs SQL scripts configured by using the `@Sql`
   annotation.
 
-
 [[testcontext-tel-config-registering-tels]]
 ===== Registering Custom `TestExecutionListener` Implementations
 
-You can register custom `TestExecutionListener` implementations for a test class and its
-subclasses by using the `@TestExecutionListeners` annotation. See
-<<integration-testing-annotations,annotation support>> and the
-{api-spring-framework}/test/context/TestExecutionListeners.html[Javadoc for
-`@TestExecutionListeners`] for details and examples.
-
-
+You can register custom `TestExecutionListener` implementations for a test class
+and its subclasses by using the `@TestExecutionListeners` annotation.
+See <<integration-testing-annotations, annotation support>> and the javadoc for
+{api-spring-framework}/test/context/TestExecutionListeners.html[`@TestExecutionListeners`]
+for details and examples.
 
 [[testcontext-tel-config-automatic-discovery]]
 ===== Automatic Discovery of Default `TestExecutionListener` Implementations
@@ -1823,20 +1757,18 @@ can contribute their own `TestExecutionListener` implementations to the list of 
 listeners in the same manner through their own `META-INF/spring.factories` properties
 file.
 
-
-
 [[testcontext-tel-config-ordering]]
 ===== Ordering `TestExecutionListener` Implementations
 
 When the TestContext framework discovers default `TestExecutionListener` implementations
-through the <<testcontext-tel-config-automatic-discovery,aforementioned>>
+through the <<testcontext-tel-config-automatic-discovery, aforementioned>>
 `SpringFactoriesLoader` mechanism, the instantiated listeners are sorted by using
 Spring's `AnnotationAwareOrderComparator`, which honors Spring's `Ordered` interface and
 `@Order` annotation for ordering. `AbstractTestExecutionListener` and all default
 `TestExecutionListener` implementations provided by Spring implement `Ordered` with
 appropriate values. Third-party frameworks and developers should therefore make sure that
 their default `TestExecutionListener` implementations are registered in the proper order
-by implementing `Ordered` or declaring `@Order`. See the Javadoc for the `getOrder()`
+by implementing `Ordered` or declaring `@Order`. See the javadoc for the `getOrder()`
 methods of the core default `TestExecutionListener` implementations for details on what
 values are assigned to each core listener.
 
@@ -1873,8 +1805,8 @@ which listeners are registered by default. Moreover, the set of default listener
 change from release to release -- for example, `SqlScriptsTestExecutionListener` was
 introduced in Spring Framework 4.1, and `DirtiesContextBeforeModesTestExecutionListener`
 was introduced in Spring Framework 4.2. Furthermore, third-party frameworks like Spring
-Security register their own default `TestExecutionListener` implementations by using the
-aforementioned <<testcontext-tel-config-automatic-discovery, automatic discovery
+Security register their own default `TestExecutionListener` implementations by using
+the aforementioned <<testcontext-tel-config-automatic-discovery, automatic discovery
 mechanism>>.
 
 To avoid having to be aware of and re-declare all default listeners, you can set the
@@ -1908,7 +1840,6 @@ be replaced with the following:
 	}
 ----
 ====
-
 
 
 [[testcontext-ctx-management]]
@@ -1969,8 +1900,8 @@ the web application context into your test, as follows:
 ====
 
 Dependency injection by using `@Autowired` is provided by the
-`DependencyInjectionTestExecutionListener`, which is configured by default (see
-<<testcontext-fixture-di>>).
+`DependencyInjectionTestExecutionListener`, which is configured by default
+(see <<testcontext-fixture-di>>).
 =====
 
 Test classes that use the TestContext framework do not need to extend any particular
@@ -1999,8 +1930,6 @@ advanced use cases.
 * <<testcontext-ctx-management-web>>
 * <<testcontext-ctx-management-caching>>
 * <<testcontext-ctx-management-ctx-hierarchies>>
-
-
 
 [[testcontext-ctx-management-xml]]
 ===== Context Configuration with XML resources
@@ -2073,17 +2002,15 @@ example shows how to do so:
 <1> Loading configuration from the default location.
 ====
 
-
-
 [[testcontext-ctx-management-groovy]]
 ===== Context Configuration with Groovy Scripts
 
 To load an `ApplicationContext` for your tests by using Groovy scripts that use the
-<<core.adoc#groovy-bean-definition-dsl,Groovy Bean Definition DSL>>, you can annotate
+<<core.adoc#groovy-bean-definition-dsl, Groovy Bean Definition DSL>>, you can annotate
 your test class with `@ContextConfiguration` and configure the `locations` or `value`
 attribute with an array that contains the resource locations of Groovy scripts. Resource
 lookup semantics for Groovy scripts are the same as those described for
-<<testcontext-ctx-management-xml,XML configuration files>>.
+<<testcontext-ctx-management-xml, XML configuration files>>.
 
 .Enabling Groovy script support
 TIP: Support for using Groovy scripts to load an `ApplicationContext` in the Spring
@@ -2157,8 +2084,6 @@ The following listing shows how to combine both in an integration test:
 ====
 =====
 
-
-
 [[testcontext-ctx-management-javaconfig]]
 ===== Context Configuration with Annotated Classes
 
@@ -2191,7 +2116,7 @@ The term "`annotated class`" can refer to any of the following:
 * A JSR-330 compliant class that is annotated with `javax.inject` annotations.
 * Any other class that contains `@Bean` methods.
 
-See the Javadoc of
+See the javadoc of
 {api-spring-framework}/context/annotation/Configuration.html[`@Configuration`] and
 {api-spring-framework}/context/annotation/Bean.html[`@Bean`] for further information
 regarding the configuration and semantics of annotated classes, paying special attention
@@ -2203,7 +2128,7 @@ TestContext framework tries to detect the presence of default configuration clas
 Specifically, `AnnotationConfigContextLoader` and `AnnotationConfigWebContextLoader`
 detect all `static` nested classes of the test class that meet the requirements for
 configuration class implementations, as specified in the
-{api-spring-framework}/context/annotation/Configuration.html[`@Configuration`] Javadoc.
+{api-spring-framework}/context/annotation/Configuration.html[`@Configuration`] javadoc.
 Note that the name of the configuration class is arbitrary. In addition, a test class can
 contain more than one `static` nested configuration class if desired. In the following
 example, the `OrderServiceTest` class declares a `static` nested configuration class
@@ -2245,8 +2170,6 @@ class:
 <1> Loading configuration information from the nested class.
 ====
 
-
-
 [[testcontext-ctx-management-mixed-config]]
 ===== Mixing XML, Groovy Scripts, and Annotated Classes
 
@@ -2279,7 +2202,6 @@ to how you configure your application in production: In production configuration
 define either a set of XML or Groovy resource locations or a set of `@Configuration`
 classes from which your production `ApplicationContext` is loaded, but you still have the
 freedom to include or import the other type of configuration.
-
 
 [[testcontext-ctx-management-initializers]]
 ===== Context Configuration with Context Initializers
@@ -2333,8 +2255,6 @@ files or configuration classes. The following example shows how to do so:
 ----
 <1> Specifying configuration by using only an initializer.
 ====
-
-
 
 [[testcontext-ctx-management-inheritance]]
 ===== Context Configuration Inheritance
@@ -2439,8 +2359,6 @@ extend another and use both its own initializer and the superclass's initializer
 <1> Initializer defined in the superclass.
 <2> Initializer defined in the subclass.
 ====
-
-
 
 [[testcontext-ctx-management-env-profiles]]
 ===== Context Configuration with Environment Profiles
@@ -2739,11 +2657,11 @@ programmatically instead of declaratively -- for example, based on:
 * The presence of custom class-level annotations.
 * Other concerns.
 
-To resolve active bean definition profiles programmatically, you can implement a custom
-`ActiveProfilesResolver` and register it by using the `resolver` attribute of
-`@ActiveProfiles`. For further information, see the corresponding
-{api-spring-framework}/test/context/ActiveProfilesResolver.html[Javadoc]. The following
-example demonstrates how to implement and register a custom
+To resolve active bean definition profiles programmatically, you can implement
+a custom `ActiveProfilesResolver` and register it by using the `resolver`
+attribute of `@ActiveProfiles`. For further information, see the corresponding
+{api-spring-framework}/test/context/ActiveProfilesResolver.html[javadoc].
+The following example demonstrates how to implement and register a custom
 `OperatingSystemActiveProfilesResolver`:
 
 ====
@@ -2777,8 +2695,6 @@ example demonstrates how to implement and register a custom
 	}
 ----
 ====
-
-
 
 [[testcontext-ctx-management-property-sources]]
 ===== Context Configuration with Test Property Sources
@@ -2861,8 +2777,6 @@ The following example sets two inlined properties:
 ----
 <1> Setting two properties by using two variations of the key-value syntax.
 ====
-
-
 
 ====== Default Properties File Detection
 
@@ -2967,8 +2881,6 @@ to define properties in both a subclass and its superclass by using inline prope
 	}
 ----
 ====
-
-
 
 [[testcontext-ctx-management-web]]
 ===== Loading a `WebApplicationContext`
@@ -3083,7 +2995,7 @@ Contrast the comments in this example with the previous example.
 --
 To provide comprehensive web testing support, Spring 3.2 introduced a
 `ServletTestExecutionListener` that is enabled by default. When testing against a
-`WebApplicationContext`, this <<testcontext-key-abstractions,`TestExecutionListener`>>
+`WebApplicationContext`, this <<testcontext-key-abstractions, `TestExecutionListener`>>
 sets up default thread-local state by using Spring Web's `RequestContextHolder` before
 each test method and creates a `MockHttpServletRequest`, a `MockHttpServletResponse`, and
 a `ServletWebRequest` based on the base resource path configured with
@@ -3130,8 +3042,6 @@ managed per test method by the `ServletTestExecutionListener`.
 ----
 ====
 --
-
-
 
 [[testcontext-ctx-management-caching]]
 ===== Context Caching
@@ -3204,12 +3114,12 @@ the underlying context cache, you can set the log level for the
 In the unlikely case that a test corrupts the application context and requires reloading
 (for example, by modifying a bean definition or the state of an application object), you
 can annotate your test class or test method with `@DirtiesContext` (see the discussion of
-`@DirtiesContext` in <<integration-testing-annotations-spring>>). This instructs Spring
+`@DirtiesContext` in <<spring-testing-annotation-dirtiescontext>>). This instructs Spring
 to remove the context from the cache and rebuild the application context before running
-the next test. Note that support for the `@DirtiesContext` annotation is provided by the
+the next test that requires the same application context. Note that support for the
+`@DirtiesContext` annotation is provided by the
 `DirtiesContextBeforeModesTestExecutionListener` and the
 `DirtiesContextTestExecutionListener`, which are enabled by default.
-
 
 [[testcontext-ctx-management-ctx-hierarchies]]
 ===== Context Hierarchies
@@ -3372,26 +3282,31 @@ shows this configuration scenario:
 NOTE: If you use `@DirtiesContext` in a test whose context is configured as part of a
 context hierarchy, you can use the `hierarchyMode` flag to control how the context cache
 is cleared. For further details, see the discussion of `@DirtiesContext` in
-<<integration-testing-annotations-spring,Spring Testing Annotations>> and the
-{api-spring-framework}/test/annotation/DirtiesContext.html[`@DirtiesContext` Javadoc].
+<<spring-testing-annotation-dirtiescontext, Spring Testing Annotations>> and the
+{api-spring-framework}/test/annotation/DirtiesContext.html[`@DirtiesContext`] javadoc.
 --
-
-
 
 [[testcontext-fixture-di]]
 ==== Dependency Injection of Test Fixtures
 
 When you use the `DependencyInjectionTestExecutionListener` (which is configured by
 default), the dependencies of your test instances are injected from beans in the
-application context that you configured with `@ContextConfiguration`. You may use setter
-injection, field injection, or both, depending on which annotations you choose and
-whether you place them on setter methods or fields. For consistency with the annotation
-support introduced in Spring 2.5 and 3.0, you can use Spring's `@Autowired` annotation or
-the `@Inject` annotation from JSR 330.
+application context that you configured with `@ContextConfiguration` or related
+annotations. You may use setter injection, field injection, or both, depending on
+which annotations you choose and whether you place them on setter methods or fields.
+If you are using JUnit Jupiter you may also optionally use constructor injection
+(see <<testcontext-junit-jupiter-di>>). For consistency with Spring's annotation-based
+injection support, you may also use Spring's `@Autowired` annotation or the `@Inject`
+annotation from JSR-330 for field and setter injection.
 
-TIP: The TestContext framework does not instrument the manner in which a test instance is
-instantiated. Thus, the use of `@Autowired` or `@Inject` for constructors has no effect
-for test classes.
+TIP: For testing frameworks other than JUnit Jupiter, the TestContext framework does not
+participate in instantiation of the test class. Thus, the use of `@Autowired` or
+`@Inject` for constructors has no effect for test classes.
+
+NOTE: Although field injection is discouraged in production code, field injection is
+actually quite natural in test code. The rationale for the difference is that you will
+never instantiate your test class directly. Consequently, there is no need to be able to
+invoke a `public` constructor or setter method on your test class.
 
 Because `@Autowired` is used to perform <<core.adoc#beans-factory-autowire, autowiring by
 type>>, if you have multiple bean definitions of the same type, you cannot rely on this
@@ -3399,7 +3314,7 @@ approach for those particular beans. In that case, you can use `@Autowired` in
 conjunction with `@Qualifier`. As of Spring 3.0, you can also choose to use `@Inject` in
 conjunction with `@Named`. Alternatively, if your test class has access to its
 `ApplicationContext`, you can perform an explicit lookup by using (for example) a call to
-`applicationContext.getBean("titleRepository")`.
+`applicationContext.getBean("titleRepository", TitleRepository.class)`.
 
 If you do not want dependency injection applied to your test instances, do not annotate
 fields or setter methods with `@Autowired` or `@Inject`. Alternatively, you can disable
@@ -3408,14 +3323,14 @@ dependency injection altogether by explicitly configuring your class with
 from the list of listeners.
 
 Consider the scenario of testing a `HibernateTitleRepository` class, as outlined in the
-<<integration-testing-goals,Goals>> section. The next two code listings demonstrate the
+<<integration-testing-goals, Goals>> section. The next two code listings demonstrate the
 use of `@Autowired` on fields and setter methods. The application context configuration
 is presented after all sample code listings.
 
 [NOTE]
 ====
 The dependency injection behavior in the following code listings is not specific to JUnit
-4. The same DI techniques can be used in conjunction with any testing framework.
+4. The same DI techniques can be used in conjunction with any supported testing framework.
 
 The following examples make calls to static assertion methods, such as `assertNotNull()`,
 but without prepending the call with `Assert`. In such cases, assume that the method was
@@ -3431,11 +3346,11 @@ The first code listing shows a JUnit 4 based implementation of the test class th
 ----
 	@RunWith(SpringRunner.class)
 	// specifies the Spring configuration to load for this test fixture
-	**@ContextConfiguration("repository-config.xml")**
+	@ContextConfiguration("repository-config.xml")
 	public class HibernateTitleRepositoryTests {
 
 		// this instance will be dependency injected by type
-		**@Autowired**
+		@Autowired
 		private HibernateTitleRepository titleRepository;
 
 		@Test
@@ -3456,13 +3371,13 @@ follows:
 ----
 	@RunWith(SpringRunner.class)
 	// specifies the Spring configuration to load for this test fixture
-	**@ContextConfiguration("repository-config.xml")**
+	@ContextConfiguration("repository-config.xml")
 	public class HibernateTitleRepositoryTests {
 
 		// this instance will be dependency injected by type
 		private HibernateTitleRepository titleRepository;
 
-		**@Autowired**
+		@Autowired
 		public void setTitleRepository(HibernateTitleRepository titleRepository) {
 			this.titleRepository = titleRepository;
 		}
@@ -3491,7 +3406,7 @@ shows this configuration:
 			http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 		<!-- this bean will be injected into the HibernateTitleRepositoryTests class -->
-		<bean id="**titleRepository**" class="**com.foo.repository.hibernate.HibernateTitleRepository**">
+		<bean id="titleRepository" class="com.foo.repository.hibernate.HibernateTitleRepository">
 			<property name="sessionFactory" ref="sessionFactory"/>
 		</bean>
 
@@ -3520,8 +3435,8 @@ method in the superclass as well):
 
 		@Autowired
 		@Override
-		public void setDataSource(**@Qualifier("myDataSource")** DataSource dataSource) {
-			**super**.setDataSource(dataSource);
+		public void setDataSource(@Qualifier("myDataSource") DataSource dataSource) {
+			super.setDataSource(dataSource);
 		}
 
 	// ...
@@ -3536,11 +3451,10 @@ bean by name there (as shown earlier, assuming that `myDataSource` is the bean `
 =====
 
 
-
 [[testcontext-web-scoped-beans]]
 ==== Testing Request- and Session-scoped Beans
 
-Spring has supported <<core#beans-factory-scopes-other,Request- and session-scoped
+Spring has supported <<core#beans-factory-scopes-other, Request- and session-scoped
 beans>> since the early years. Since Spring 3.2, you can test your request-scoped and
 session-scoped beans by following these steps:
 
@@ -3554,7 +3468,7 @@ session-scoped beans by following these steps:
 
 The next code snippet shows the XML configuration for a login use case. Note that the
 `userService` bean has a dependency on a request-scoped `loginAction` bean. Also, the
-`LoginAction` is instantiated by using <<core.adoc#expressions,SpEL expressions>> that
+`LoginAction` is instantiated by using <<core.adoc#expressions, SpEL expressions>> that
 retrieve the username and password from the current HTTP request. In our test, we want to
 configure these request parameters through the mock managed by the TestContext framework.
 The following listing shows the configuration for this use case:
@@ -3673,7 +3587,6 @@ configured theme. The following example shows how to do so:
 ====
 
 
-
 [[testcontext-tx]]
 ==== Transaction Management
 
@@ -3684,7 +3597,6 @@ transactions, however, you must configure a `PlatformTransactionManager` bean in
 `ApplicationContext` that is loaded with `@ContextConfiguration` semantics (further
 details are provided later). In addition, you must declare Spring's `@Transactional`
 annotation either at the class or the method level for your tests.
-
 
 [[testcontext-tx-test-managed-transactions]]
 ===== Test-managed Transactions
@@ -3698,8 +3610,30 @@ application code that is invoked by tests). Spring-managed and application-manag
 transactions typically participate in test-managed transactions. However, you should use
 caution if Spring-managed or application-managed transactions are configured with any
 propagation type other than `REQUIRED` or `SUPPORTS` (see the discussion on
-<<data-access.adoc#tx-propagation,transaction propagation>> for details).
+<<data-access.adoc#tx-propagation, transaction propagation>> for details).
 
+.Preemptive timeouts and test-managed transactions
+[WARNING]
+====
+Caution must be taken when using any form of preemptive timeouts from a testing framework
+in conjunction with Spring's test-managed transactions.
+
+Specifically, Spring’s testing support binds transaction state to the current thread (via
+a `java.lang.ThreadLocal` variable) _before_ the current test method is invoked. If a
+testing framework invokes the current test method in a new thread in order to support a
+preemptive timeout, any actions performed within the current test method will _not_ be
+invoked within the test-managed transaction. Consequently, the result of any such actions
+will not be rolled back with the test-managed transaction. On the contrary, such actions
+will be committed to the persistent store -- for example, a relational database -- even
+though the test-managed transaction is properly rolled back by Spring.
+
+Situations in which this can occur include but are not limited to the following.
+
+* JUnit 4's `@Test(timeout = ...)` support and `TimeOut` rule
+* JUnit Jupiter's `assertTimeoutPreemptively(...)` methods in the
+  `org.junit.jupiter.api.Assertions` class
+* TestNG's `@Test(timeOut = ...)` support
+====
 
 [[testcontext-tx-enabling-transactions]]
 ===== Enabling and Disabling Transactions
@@ -3768,10 +3702,7 @@ a Hibernate-based `UserRepository`:
 
 As explained in <<testcontext-tx-rollback-and-commit-behavior>>, there is no need to
 clean up the database after the `createUser()` method runs, since any changes made to the
-database are automatically rolled back by the `TransactionalTestExecutionListener`. See
-<<testing-examples-petclinic>> for an additional example.
-
-
+database are automatically rolled back by the `TransactionalTestExecutionListener`.
 
 [[testcontext-tx-rollback-and-commit-behavior]]
 ===== Transaction Rollback and Commit Behavior
@@ -3779,7 +3710,7 @@ database are automatically rolled back by the `TransactionalTestExecutionListene
 By default, test transactions will be automatically rolled back after completion of the
 test; however, transactional commit and rollback behavior can be configured declaratively
 via the `@Commit` and `@Rollback` annotations. See the corresponding entries in the
-<<integration-testing-annotations,annotation support>> section for further details.
+<<integration-testing-annotations, annotation support>> section for further details.
 
 [[testcontext-tx-programmatic-tx-mgt]]
 ===== Programmatic Transaction Management
@@ -3791,9 +3722,9 @@ end the current test-managed transaction or to configure the current test-manage
 transaction for rollback or commit. Support for `TestTransaction` is automatically
 available whenever the `TransactionalTestExecutionListener` is enabled.
 
-The following example demonstrates some of the features of `TestTransaction` (see the
-{api-spring-framework}/test/context/transaction/TestTransaction.html[Javadoc for
-`TestTransaction`] for further details):
+The following example demonstrates some of the features of `TestTransaction`. See the
+javadoc for {api-spring-framework}/test/context/transaction/TestTransaction.html[`TestTransaction`]
+for further details.
 
 ====
 [source,java,indent=0]
@@ -3828,8 +3759,6 @@ The following example demonstrates some of the features of `TestTransaction` (se
 ----
 ====
 
-
-
 [[testcontext-tx-before-and-after-tx]]
 ===== Running Code Outside of a Transaction
 
@@ -3849,8 +3778,6 @@ run within a transaction. In addition, methods annotated with `@BeforeTransactio
 `@AfterTransaction` are not run for test methods that are not configured to run within a
 transaction.
 
-
-
 [[testcontext-tx-mgr-config]]
 ===== Configuring a Transaction Manager
 
@@ -3860,11 +3787,9 @@ of `PlatformTransactionManager` within the test's `ApplicationContext`, you can 
 qualifier by using `@Transactional("myTxMgr")` or `@Transactional(transactionManager =
 "myTxMgr")`, or `TransactionManagementConfigurer` can be implemented by an
 `@Configuration` class. Consult the
-{api-spring-framework}/test/context/transaction/TestContextTransactionUtils.html#retrieveTransactionManager-org.springframework.test.context.TestContext-java.lang.String-[Javadoc
+{api-spring-framework}/test/context/transaction/TestContextTransactionUtils.html#retrieveTransactionManager-org.springframework.test.context.TestContext-java.lang.String-[javadoc
 for `TestContextTransactionUtils.retrieveTransactionManager()`] for details on the
 algorithm used to look up a transaction manager in the test's `ApplicationContext`.
-
-
 
 [[testcontext-tx-annotation-demo]]
 ===== Demonstration of All Transaction-related Annotations
@@ -3872,11 +3797,11 @@ algorithm used to look up a transaction manager in the test's `ApplicationContex
 The following JUnit 4 based example displays a fictitious integration testing scenario
 that highlights all transaction-related annotations. The example is not intended to
 demonstrate best practices but rather to demonstrate how these annotations can be used.
-See the <<integration-testing-annotations,annotation support>> section for further
+See the <<integration-testing-annotations, annotation support>> section for further
 information and configuration examples. <<testcontext-executing-sql-declaratively-tx,
 Transaction management for `@Sql`>> contains an additional example that uses `@Sql` for
 declarative SQL script execution with default transaction rollback semantics. The
-following example shows the relevant annotations in bold:
+following example shows the relevant annotations:
 
 ====
 [source,java,indent=0]
@@ -3884,11 +3809,11 @@ following example shows the relevant annotations in bold:
 ----
 	@RunWith(SpringRunner.class)
 	@ContextConfiguration
-	**@Transactional(transactionManager = "txMgr")**
-	**@Commit**
+	@Transactional(transactionManager = "txMgr")
+	@Commit
 	public class FictitiousTransactionalTest {
 
-		**@BeforeTransaction**
+		@BeforeTransaction
 		void verifyInitialDatabaseState() {
 			// logic to verify the initial state before a transaction is started
 		}
@@ -3900,7 +3825,7 @@ following example shows the relevant annotations in bold:
 
 		@Test
 		// overrides the class-level @Commit setting
-		**@Rollback**
+		@Rollback
 		public void modifyDatabaseWithinTransaction() {
 			// logic which uses the test data and modifies database state
 		}
@@ -3910,7 +3835,7 @@ following example shows the relevant annotations in bold:
 			// execute "tear down" logic within the transaction
 		}
 
-		**@AfterTransaction**
+		@AfterTransaction
 		void verifyFinalDatabaseState() {
 			// logic to verify the final state after transaction has rolled back
 		}
@@ -3994,7 +3919,6 @@ The following example shows matching methods for JPA:
 =====
 
 
-
 [[testcontext-executing-sql]]
 ==== Executing SQL Scripts
 
@@ -4026,7 +3950,7 @@ integration test methods.
 scripts and is mainly intended for internal use within the framework. However, if you
 require full control over how SQL scripts are parsed and executed, `ScriptUtils` may suit
 your needs better than some of the other alternatives described later. See the
-{api-spring-framework}/jdbc/datasource/init/ScriptUtils.html[Javadoc] for individual
+{api-spring-framework}/jdbc/datasource/init/ScriptUtils.html[javadoc] for individual
 methods in `ScriptUtils` for further details.
 
 `ResourceDatabasePopulator` provides an object-based API for programmatically populating,
@@ -4035,7 +3959,7 @@ resources. `ResourceDatabasePopulator` provides options for configuring the char
 encoding, statement separator, comment delimiters, and error handling flags used when
 parsing and running the scripts. Each of the configuration options has a reasonable
 default value. See the
-{api-spring-framework}/jdbc/datasource/init/ResourceDatabasePopulator.html[Javadoc] for
+{api-spring-framework}/jdbc/datasource/init/ResourceDatabasePopulator.html[javadoc] for
 details on default values. To run the scripts configured in a
 `ResourceDatabasePopulator`, you can invoke either the `populate(Connection)` method to
 execute the populator against a `java.sql.Connection` or the `execute(DataSource)` method
@@ -4063,11 +3987,9 @@ specifies SQL scripts for a test schema and test data, sets the statement separa
 Note that `ResourceDatabasePopulator` internally delegates to `ScriptUtils` for parsing
 and running SQL scripts. Similarly, the `executeSqlScript(..)` methods in
 <<testcontext-support-classes-junit4, `AbstractTransactionalJUnit4SpringContextTests`>>
-and <<testcontext-support-classes-testng,`AbstractTransactionalTestNGSpringContextTests`>>
-internally use a `ResourceDatabasePopulator` to run SQL scripts. See the Javadoc for the
+and <<testcontext-support-classes-testng, `AbstractTransactionalTestNGSpringContextTests`>>
+internally use a `ResourceDatabasePopulator` to run SQL scripts. See the javadoc for the
 various `executeSqlScript(..)` methods for further details.
-
-
 
 [[testcontext-executing-sql-declaratively]]
 ===== Executing SQL scripts declaratively with @Sql
@@ -4079,8 +4001,6 @@ configure the resource paths to SQL scripts that should be run against a given d
 before or after an integration test method. Note that method-level declarations override
 class-level declarations and that support for `@Sql` is provided by the
 `SqlScriptsTestExecutionListener`, which is enabled by default.
-
-
 
 ====== Path Resource Semantics
 
@@ -4116,8 +4036,6 @@ within a JUnit Jupiter based integration test class:
 ----
 ====
 
-
-
 ====== Default Script Detection
 
 If no SQL scripts are specified, an attempt is made to detect a `default` script,
@@ -4129,8 +4047,6 @@ depending on where `@Sql` is declared. If a default cannot be detected, an
 * Method-level declaration: If the annotated test method is named `testMethod()` and is
   defined in the class `com.example.MyTest`, the corresponding default script is
   `classpath:com/example/MyTest.testMethod.sql`.
-
-
 
 ====== Declaring Multiple `@Sql` Sets
 
@@ -4217,7 +4133,7 @@ serves as global configuration for all SQL scripts within the test class hierarc
 declared directly by using the `config` attribute of the `@Sql` annotation, `@SqlConfig`
 serves as local configuration for the SQL scripts declared within the enclosing `@Sql`
 annotation. Every attribute in `@SqlConfig` has an implicit default value, which is
-documented in the Javadoc of the corresponding attribute. Due to the rules defined for
+documented in the javadoc of the corresponding attribute. Due to the rules defined for
 annotation attributes in the Java Language Specification, it is, unfortunately, not
 possible to assign a value of `null` to an annotation attribute. Thus, in order to
 support overrides of inherited global configuration, `@SqlConfig` attributes have an
@@ -4230,7 +4146,7 @@ configuration, therefore, overrides global configuration.
 
 The configuration options provided by `@Sql` and `@SqlConfig` are equivalent to those
 supported by `ScriptUtils` and `ResourceDatabasePopulator` but are a superset of those
-provided by the `<jdbc:initialize-database/>` XML namespace element. See the Javadoc of
+provided by the `<jdbc:initialize-database/>` XML namespace element. See the javadoc of
 individual attributes in {api-spring-framework}/test/context/jdbc/Sql.html[`@Sql`] and
 {api-spring-framework}/test/context/jdbc/SqlConfig.html[`@SqlConfig`] for details.
 
@@ -4255,7 +4171,7 @@ attributes of `@SqlConfig`. Furthermore, you can control the transaction propaga
 behavior by setting the `transactionMode` attribute of `@SqlConfig` (for example, whether
 scripts should be run in an isolated transaction). Although a thorough discussion of all
 supported options for transaction management with `@Sql` is beyond the scope of this
-reference manual, the Javadoc for
+reference manual, the javadoc for
 {api-spring-framework}/test/context/jdbc/SqlConfig.html[`@SqlConfig`] and
 {api-spring-framework}/test/context/jdbc/SqlScriptsTestExecutionListener.html[`SqlScriptsTestExecutionListener`]
 provide detailed information, and the following example shows a typical testing scenario
@@ -4303,7 +4219,6 @@ run, since any changes made to the database (either within the test method or wi
 details).
 
 
-
 [[testcontext-parallel-test-execution]]
 ==== Parallel Test Execution
 
@@ -4339,25 +4254,22 @@ This may be due to the use of `@DirtiesContext` or due to automatic eviction fro
 `ContextCache`. If `@DirtiesContext` is the culprit, you either need to find a way to
 avoid using `@DirtiesContext` or exclude such tests from parallel execution. If the
 maximum size of the `ContextCache` has been exceeded, you can increase the maximum size
-of the cache. See the discussion on <<testcontext-ctx-management-caching,context
-caching>> for details.
+of the cache. See the discussion on <<testcontext-ctx-management-caching, context caching>>
+for details.
 ====
 
 WARNING: Parallel test execution in the Spring TestContext Framework is only possible if
 the underlying `TestContext` implementation provides a copy constructor, as explained in
-the {api-spring-framework}/test/context/TestContext.html[Javadoc for `TestContext`]. The
+the javadoc for {api-spring-framework}/test/context/TestContext.html[`TestContext`]. The
 `DefaultTestContext` used in Spring provides such a constructor. However, if you use a
 third-party library that provides a custom `TestContext` implementation, you need to
 verify that it is suitable for parallel test execution.
-
 
 
 [[testcontext-support-classes]]
 ==== TestContext Framework Support Classes
 
 This section describes the various classes that support the Spring TestContext Framework.
-
-
 
 [[testcontext-junit4-runner]]
 ===== Spring JUnit 4 Runner
@@ -4371,7 +4283,7 @@ loading application contexts, dependency injection of test instances, transactio
 method execution, and so on. If you want to use the Spring TestContext Framework with an
 alternative runner (such as JUnit 4's `Parameterized` runner) or third-party runners
 (such as the `MockitoJUnitRunner`), you can, optionally, use
-<<testcontext-junit4-rules,Spring's support for JUnit rules>> instead.
+<<testcontext-junit4-rules, Spring's support for JUnit rules>> instead.
 
 The following code listing shows the minimal requirements for configuring a test class to
 run with the custom Spring `Runner`:
@@ -4395,8 +4307,6 @@ run with the custom Spring `Runner`:
 In the preceding example, `@TestExecutionListeners` is configured with an empty list, to
 disable the default listeners, which otherwise would require an `ApplicationContext` to
 be configured through `@ContextConfiguration`.
-
-
 
 [[testcontext-junit4-rules]]
 ===== Spring JUnit 4 Rules
@@ -4466,8 +4376,8 @@ extend `AbstractTransactionalJUnit4SpringContextTests`, you can access a `protec
 database. You can use such queries to confirm database state both before and after
 running database-related application code, and Spring ensures that such queries run in
 the scope of the same transaction as the application code. When used in conjunction with
-an ORM tool, be sure to avoid <<testcontext-tx-false-positives,false positives>>. As
-mentioned in <<integration-testing-support-jdbc>>,
+an ORM tool, be sure to avoid <<testcontext-tx-false-positives, false positives>>.
+As mentioned in <<integration-testing-support-jdbc>>,
 `AbstractTransactionalJUnit4SpringContextTests` also provides convenience methods that
 delegate to methods in `JdbcTestUtils` by using the aforementioned `jdbcTemplate`.
 Furthermore, `AbstractTransactionalJUnit4SpringContextTests` provides an
@@ -4475,10 +4385,8 @@ Furthermore, `AbstractTransactionalJUnit4SpringContextTests` provides an
 
 TIP: These classes are a convenience for extension. If you do not want your test classes
 to be tied to a Spring-specific class hierarchy, you can configure your own custom test
-classes by using `@RunWith(SpringRunner.class)` or <<testcontext-junit4-rules,Spring's
+classes by using `@RunWith(SpringRunner.class)` or <<testcontext-junit4-rules, Spring's
 JUnit rules>>.
-
-
 
 [[testcontext-junit-jupiter-extension]]
 ===== SpringExtension for JUnit Jupiter
@@ -4490,7 +4398,7 @@ and integration tests and simultaneously reap the benefits of the TestContext fr
 such as support for loading application contexts, dependency injection of test instances,
 transactional test method execution, and so on.
 
-Furthermore, thanks to the rich extension API in JUnit Jupiter, Spring can provide the
+Furthermore, thanks to the rich extension API in JUnit Jupiter, Spring provides the
 following features above and beyond the feature set that Spring supports for JUnit 4 and
 TestNG:
 
@@ -4525,7 +4433,7 @@ The following code listing shows how to configure a test class to use the
 ----
 ====
 
-Since you can also use annotations in JUnit 5 as meta-annotations, Spring can provide the
+Since you can also use annotations in JUnit 5 as meta-annotations, Spring provides the
 `@SpringJUnitConfig` and `@SpringJUnitWebConfig` composed annotations to simplify the
 configuration of the test `ApplicationContext` and JUnit Jupiter.
 
@@ -4572,8 +4480,6 @@ Similarly, the following example uses `@SpringJUnitWebConfig` to create a
 See the documentation for `@SpringJUnitConfig` and `@SpringJUnitWebConfig` in
 <<integration-testing-annotations-junit-jupiter>> for further details.
 
-
-
 [[testcontext-junit-jupiter-di]]
 ===== Dependency Injection with `SpringExtension`
 
@@ -4586,8 +4492,6 @@ Specifically, `SpringExtension` can inject dependencies from the test's
 `ApplicationContext` into test constructors and methods that are annotated with
 `@BeforeAll`, `@AfterAll`, `@BeforeEach`, `@AfterEach`, `@Test`, `@RepeatedTest`,
 `@ParameterizedTest`, and others.
-
-
 
 [[testcontext-junit-jupiter-di-constructor]]
 ====== Constructor Injection
@@ -4603,6 +4507,25 @@ WARNING: If the constructor for a test class is itself annotated with `@Autowire
 Spring assumes the responsibility for resolving _all_ parameters in the constructor.
 Consequently, no other `ParameterResolver` registered with JUnit Jupiter can resolve
 parameters for such a constructor.
+
+[WARNING]
+====
+Constructor injection for test classes must not be used in conjunction with JUnit
+Jupiter's `@TestInstance(PER_CLASS)` support if `@DirtiesContext` is used to close the
+test's `ApplicationContext` before or after test methods.
+
+The reason is that `@TestInstance(PER_CLASS)` instructs JUnit Jupiter to cache the test
+instance between test method invocations. Consequently, the test instance will retain
+references to beans that were originally injected from an `ApplicationContext` that has
+been subsequently closed. Since the constructor for the test class will only be invoked
+once in such scenarios, dependency injection will not occur again, and subsequent tests
+will interact with beans from the closed `ApplicationContext` which may result in errors.
+
+To use `@DirtiesContext` with "before test method" or "after test method" modes in
+conjunction with `@TestInstance(PER_CLASS)`, one must configure dependencies from Spring
+to be supplied via field or setter injection so that they can be re-injected between test
+method invocations.
+====
 
 In the following example, Spring injects the `OrderService` bean from the
 `ApplicationContext` loaded from `TestConfig.class` into the
@@ -4628,7 +4551,6 @@ In the following example, Spring injects the `OrderService` bean from the
 ====
 
 Note that this feature lets test dependencies be `final` and therefore immutable.
-
 
 [[testcontext-junit-jupiter-di-method]]
 ====== Method Injection
@@ -4684,7 +4606,6 @@ into the `placeOrderRepeatedly()` test method simultaneously.
 Note that the use of `@RepeatedTest` from JUnit Jupiter lets the test method gain access
 to the `RepetitionInfo`.
 
-
 [[testcontext-support-classes-testng]]
 ===== TestNG Support Classes
 
@@ -4709,8 +4630,8 @@ extend `AbstractTransactionalTestNGSpringContextTests`, you can access a `protec
 database. You can use such queries to confirm database state both before and after
 running database-related application code, and Spring ensures that such queries run in
 the scope of the same transaction as the application code. When used in conjunction with
-an ORM tool, be sure to avoid <<testcontext-tx-false-positives,false positives>>. As
-mentioned in <<integration-testing-support-jdbc>>,
+an ORM tool, be sure to avoid <<testcontext-tx-false-positives, false positives>>.
+As mentioned in <<integration-testing-support-jdbc>>,
 `AbstractTransactionalTestNGSpringContextTests` also provides convenience methods that
 delegate to methods in `JdbcTestUtils` by using the aforementioned `jdbcTemplate`.
 Furthermore, `AbstractTransactionalTestNGSpringContextTests` provides an
@@ -4747,7 +4668,6 @@ For more information on the differences between out-of-container and end-to-end
 integration tests, see <<spring-mvc-test-vs-end-to-end-integration-tests>>.
 
 
-
 [[spring-mvc-test-server]]
 ==== Server-Side Tests
 
@@ -4762,7 +4682,7 @@ Furthermore, other controller methods such as `@InitBinder`, `@ModelAttribute`, 
 The goal of Spring MVC Test is to provide an effective way to test controllers by
 performing requests and generating responses through the actual `DispatcherServlet`.
 
-Spring MVC Test builds on the familiar <<mock-objects-servlet,"`mock`" implementations of
+Spring MVC Test builds on the familiar <<mock-objects-servlet, "`mock`" implementations of
 the Servlet API>> available in the `spring-test` module. This allows performing requests
 and generating responses without the need for running in a Servlet container. For the
 most part, everything should work as it does at runtime with a few notable exceptions, as
@@ -4810,12 +4730,10 @@ syntax is supported through the Jayway https://github.com/jayway/JsonPath[JsonPa
 project]. Many other options for verifying the result of the performed request are
 discussed later in this document.
 
-
-
 [[spring-mvc-test-server-static-imports]]
 ===== Static Imports
 
-The fluent API in the example from the <<spring-mvc-test-server,preceding section>>
+The fluent API in the example from the <<spring-mvc-test-server, preceding section>>
 requires a few static imports, such as `MockMvcRequestBuilders.{asterisk}`,
 `MockMvcResultMatchers.{asterisk}`, and `MockMvcBuilders.{asterisk}`. An easy way to find
 these classes is to search for types that match `MockMvc*`. If you use Eclipse or the
@@ -4824,8 +4742,6 @@ the Eclipse preferences under Java -> Editor -> Content Assist -> Favorites. Doi
 lets you use content assist after typing the first character of the static method name.
 Other IDEs (such as IntelliJ) may not require any additional configuration. Check the
 support for code completion on static members.
-
-
 
 [[spring-mvc-test-server-setup-options]]
 ===== Setup Choices
@@ -4942,8 +4858,6 @@ answer. However, using the `standaloneSetup` does imply the need for additional
 Alternatively, you can write all your tests with `webAppContextSetup`, in order to always
 test against your actual Spring MVC configuration.
 
-
-
 [[spring-mvc-test-server-setup-steps]]
 ===== Setup Features
 
@@ -4985,11 +4899,9 @@ You can use it as follows:
 ----
 ====
 
-See the {api-spring-framework}/test/web/servlet/setup/ConfigurableMockMvcBuilder.html[Javadoc
-for `ConfigurableMockMvcBuilder`] for a list of all MockMvc builder features or use the
-IDE to explore the available options.
-
-
+See the javadoc for
+{api-spring-framework}/test/web/servlet/setup/ConfigurableMockMvcBuilder.html[`ConfigurableMockMvcBuilder`]
+for a list of all MockMvc builder features or use the IDE to explore the available options.
 
 [[spring-mvc-test-server-performing-requests]]
 ===== Performing Requests
@@ -5082,8 +4994,6 @@ The preceding properties affect every request performed through the `MockMvc` in
 If the same property is also specified on a given request, it overrides the default
 value. That is why the HTTP method and URI in the default request do not matter, since
 they must be specified on every request.
-
-
 
 [[spring-mvc-test-server-defining-expectations]]
 ===== Defining Expectations
@@ -5205,8 +5115,6 @@ resulting links by using XPath expressions:
 ----
 ====
 
-
-
 [[spring-mvc-test-server-filters]]
 ===== Filter Registrations
 
@@ -5224,6 +5132,18 @@ instances, as the following example shows:
 Registered filters are invoked through the `MockFilterChain` from `spring-test`, and the
 last filter delegates to the `DispatcherServlet`.
 
+
+[[spring-mvc-test-vs-streaming-response]]
+===== Streaming Responses
+
+There are no options built into Spring MVC Test for container-less testing of streaming
+responses. Applications that make use of
+<<web.adoc#mvc-ann-async-http-streaming,Spring MVC streaming>> options can use the
+<<testing.adoc#webtestclient-stream,WebTestClient>> to perform end-to-end, integration
+tests against a running server. This is also supported in Spring Boot where you can
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-testing-spring-boot-applications-testing-with-running-server[test a running server]
+with `WebTestClient`. One extra advantage is the ability to use the `StepVerifier` from
+project Reactor that allows declaring expectations on a stream of data.
 
 
 [[spring-mvc-test-vs-end-to-end-integration-tests]]
@@ -5272,8 +5192,6 @@ same time, it is important not to lose sight of the fact that the response is th
 important thing to check. In short, there is room here for multiple styles and strategies
 of testing even within the same project.
 
-
-
 [[spring-mvc-test-server-resources]]
 ===== Further Server-Side Test Examples
 
@@ -5288,7 +5206,7 @@ full test coverage based on Spring MVC Test.
 [[spring-mvc-test-server-htmlunit]]
 ==== HtmlUnit Integration
 
-Spring provides integration between <<spring-mvc-test-server,MockMvc>> and
+Spring provides integration between <<spring-mvc-test-server, MockMvc>> and
 http://htmlunit.sourceforge.net/[HtmlUnit]. This simplifies performing end-to-end testing
 when using HTML-based views. This integration lets you:
 
@@ -5304,8 +5222,6 @@ when using HTML-based views. This integration lets you:
 NOTE: MockMvc works with templating technologies that do not rely on a Servlet Container
 (for example, Thymeleaf, FreeMarker, and others), but it does not work with JSPs, since
 they rely on the Servlet container.
-
-
 
 [[spring-mvc-test-server-htmlunit-why]]
 ===== Why HtmlUnit Integration?
@@ -5408,8 +5324,6 @@ the input to a user for creating a message. In addition, our form view can poten
 use additional resources that impact the behavior of the page, such as JavaScript
 validation.
 
-
-
 [[spring-mvc-test-server-htmlunit-why-integration]]
 ====== Integration Testing to the Rescue?
 
@@ -5440,16 +5354,12 @@ and without side effects. We can then implement a small number of true end-to-en
 integration tests that validate simple workflows to ensure that everything works together
 properly.
 
-
-
 [[spring-mvc-test-server-htmlunit-why-mockmvc]]
 ====== Enter HtmlUnit Integration
 
 So how can we achieve a balance between testing the interactions of our pages and still
 retain good performance within our test suite? The answer is: "`By integrating MockMvc
 with HtmlUnit.`"
-
-
 
 [[spring-mvc-test-server-htmlunit-options]]
 ====== HtmlUnit Integration Options
@@ -5464,15 +5374,11 @@ You have a number of options when you want to integrate MockMvc with HtmlUnit:
   use Groovy for testing, ease development, and reuse code between integration and
   end-to-end testing.
 
-
-
 [[spring-mvc-test-server-htmlunit-mah]]
 ===== MockMvc and HtmlUnit
 
 This section describes how to integrate MockMvc and HtmlUnit. Use this option if you want
 to use the raw HtmlUnit libraries.
-
-
 
 [[spring-mvc-test-server-htmlunit-mah-setup]]
 ====== MockMvc and HtmlUnit Setup
@@ -5508,8 +5414,6 @@ This ensures that any URL that references `localhost` as the server is directed 
 `MockMvc` instance without the need for a real HTTP connection. Any other URL is
 requested by using a network connection, as normal. This lets us easily test the use of
 CDNs.
-
-
 
 [[spring-mvc-test-server-htmlunit-mah-usage]]
 ====== MockMvc and HtmlUnit Usage
@@ -5561,7 +5465,7 @@ assertions use the http://joel-costigliola.github.io/assertj/[AssertJ] library:
 ====
 
 The preceding code improves on our
-<<spring-mvc-test-server-htmlunit-mock-mvc-test,MockMvc test>> in a number of ways.
+<<spring-mvc-test-server-htmlunit-mock-mvc-test, MockMvc test>> in a number of ways.
 First, we no longer have to explicitly verify our form and then create a request that
 looks like the form. Instead, we request the form, fill it out, and submit it, thereby
 significantly reducing the overhead.
@@ -5572,8 +5476,6 @@ the behavior of JavaScript within our pages.
 
 See the http://htmlunit.sourceforge.net/gettingStarted.html[HtmlUnit documentation] for
 additional information about using HtmlUnit.
-
-
 
 [[spring-mvc-test-server-htmlunit-mah-advanced-builder]]
 ====== Advanced `MockMvcWebClientBuilder`
@@ -5649,16 +5551,12 @@ the full power of MockMvc at our fingertips.
 TIP: For additional information on creating a `MockMvc` instance, see
 <<spring-mvc-test-server-setup-options>>.
 
-
-
 [[spring-mvc-test-server-htmlunit-webdriver]]
 ===== MockMvc and WebDriver
 
 In the previous sections, we have seen how to use MockMvc in conjunction with the raw
 HtmlUnit APIs. In this section, we use additional abstractions within the Selenium
 http://docs.seleniumhq.org/projects/webdriver/[WebDriver] to make things even easier.
-
-
 
 [[spring-mvc-test-server-htmlunit-webdriver-why]]
 ====== Why WebDriver and MockMvc?
@@ -5755,8 +5653,6 @@ https://github.com/SeleniumHQ/selenium/wiki/PageObjects[Page Object Pattern]. Wh
 can certainly do this with HtmlUnit, WebDriver provides some tools that we explore in the
 following sections to make this pattern much easier to implement.
 
-
-
 [[spring-mvc-test-server-htmlunit-webdriver-setup]]
 ====== MockMvc and WebDriver Setup
 
@@ -5791,8 +5687,6 @@ directed to our `MockMvc` instance without the need for a real HTTP connection. 
 URL is requested by using a network connection, as normal. This lets us easily test the
 use of CDNs.
 
-
-
 [[spring-mvc-test-server-htmlunit-webdriver-usage]]
 ====== MockMvc and WebDriver Usage
 
@@ -5817,8 +5711,8 @@ We can then fill out the form and submit it to create a message, as follows:
 ----
 ====
 
-This improves on the design of our <<spring-mvc-test-server-htmlunit-mah-usage,HtmlUnit
-test>> by leveraging the Page Object Pattern. As we mentioned in
+This improves on the design of our <<spring-mvc-test-server-htmlunit-mah-usage, HtmlUnit test>>
+by leveraging the Page Object Pattern. As we mentioned in
 <<spring-mvc-test-server-htmlunit-webdriver-why>>, we can use the Page Object Pattern
 with HtmlUnit, but it is much easier with WebDriver. Consider the following
 `CreateMessagePage` implementation:
@@ -5923,8 +5817,6 @@ as follows:
 For additional information on using WebDriver, see the Selenium
 https://github.com/SeleniumHQ/selenium/wiki/Getting-Started[WebDriver documentation].
 
-
-
 [[spring-mvc-test-server-htmlunit-webdriver-advanced-builder]]
 ====== Advanced `MockMvcHtmlUnitDriverBuilder`
 
@@ -5999,25 +5891,19 @@ the full power of MockMvc at our fingertips.
 TIP: For additional information on creating a `MockMvc` instance, see
 <<spring-mvc-test-server-setup-options>>.
 
-
-
 [[spring-mvc-test-server-htmlunit-geb]]
 ===== MockMvc and Geb
 
 In the previous section, we saw how to use MockMvc with WebDriver. In this section, we
 use http://www.gebish.org/[Geb] to make our tests even Groovy-er.
 
-
-
 [[spring-mvc-test-server-htmlunit-geb-why]]
 ====== Why Geb and MockMvc?
 
 Geb is backed by WebDriver, so it offers many of the
-<<spring-mvc-test-server-htmlunit-webdriver-why,same benefits>> that we get from
+<<spring-mvc-test-server-htmlunit-webdriver-why, same benefits>> that we get from
 WebDriver. However, Geb makes things even easier by taking care of some of the
 boilerplate code for us.
-
-
 
 [[spring-mvc-test-server-htmlunit-geb-setup]]
 ====== MockMvc and Geb Setup
@@ -6043,8 +5929,6 @@ This ensures that any URL referencing `localhost` as the server is directed to o
 `MockMvc` instance without the need for a real HTTP connection. Any other URL is
 requested by using a network connection as normal. This lets us easily test the use of
 CDNs.
-
-
 
 [[spring-mvc-test-server-htmlunit-geb-usage]]
 ====== MockMvc and Geb Usage
@@ -6077,7 +5961,7 @@ forwarded to the current page object. This removes a lot of the boilerplate code
 needed when using WebDriver directly.
 
 As with direct WebDriver usage, this improves on the design of our
-<<spring-mvc-test-server-htmlunit-mah-usage,HtmlUnit test>> by using the Page Object
+<<spring-mvc-test-server-htmlunit-mah-usage, HtmlUnit test>> by using the Page Object
 Pattern. As mentioned previously, we can use the Page Object Pattern with HtmlUnit and
 WebDriver, but it is even easier with Geb. Consider our new Groovy-based
 `CreateMessagePage` implementation:
@@ -6146,7 +6030,6 @@ message == expectedMessage
 
 For further details on how to get the most out of Geb, see
 http://www.gebish.org/manual/current/[The Book of Geb] user's manual.
-
 
 
 [[spring-mvc-test-client]]
@@ -6249,8 +6132,6 @@ Assist -> Favorites. That allows using content assist after typing the first cha
 the static method name. Other IDEs (such IntelliJ) may not require any additional
 configuration. Check for the support for code completion on static members.
 
-
-
 [[spring-mvc-test-client-resources]]
 ===== Further Examples of Client-side REST Tests
 
@@ -6258,115 +6139,7 @@ Spring MVC Test's own tests include
 https://github.com/spring-projects/spring-framework/tree/master/spring-test/src/test/java/org/springframework/test/web/client/samples[example
 tests] of client-side REST tests.
 
-
-
 include::testing-webtestclient.adoc[leveloffset=+2]
-
-
-
-[[testing-examples-petclinic]]
-=== PetClinic Example
-
-The PetClinic application, available on
-https://github.com/spring-projects/spring-petclinic[GitHub], shows several features of
-the Spring TestContext Framework in a JUnit 4 environment. Most test functionality is
-included in the `AbstractClinicTests`, for which a partial listing follows:
-
-====
-[source,java,indent=0]
-[subs="verbatim,quotes"]
-----
-	import static org.junit.Assert.assertEquals;
-	// import ...
-
-	@ContextConfiguration <1>
-	public abstract class AbstractClinicTests extends AbstractTransactionalJUnit4SpringContextTests { <2>
-
-		@Autowired <3>
-		protected Clinic clinic;
-
-		@Test
-		public void getVets() {
-			Collection<Vet> vets = this.clinic.getVets();
-			assertEquals("JDBC query must show the same number of vets",
-				super.countRowsInTable("VETS"), vets.size()); <4>
-			Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
-			assertEquals("Leary", v1.getLastName());
-			assertEquals(1, v1.getNrOfSpecialties());
-			assertEquals("radiology", (v1.getSpecialties().get(0)).getName());
-			// ...
-		}
-
-		// ...
-	}
-----
-
-<1> Load the application context from the default location: `AbstractClinicTests-context.xml`.
-<2> This test case extends the `AbstractTransactionalJUnit4SpringContextTests` class, from
-which it inherits configuration for Dependency Injection (through the
-`DependencyInjectionTestExecutionListener`) and transactional behavior (through the
-`TransactionalTestExecutionListener`).
-<3> The `clinic` instance variable (the application object being tested) is set by
-Dependency Injection through `@Autowired` semantics.
-<4> The `getVets()` method shows how you can use the inherited `countRowsInTable()`
-method to easily verify the number of rows in a given table, thus verifying correct
-behavior of the application code being tested. This allows for stronger tests and
-lessens dependency on the exact test data. For example, you can add additional rows in
-the database without breaking tests.
-====
-
-Like many integration tests that use a database, most of the tests in
-`AbstractClinicTests` depend on a minimum amount of data already being in the database
-before the test cases run. Alternatively, you can populate the database within the test
-fixture set up of your test cases (again, within the same transaction as the tests).
-
-The PetClinic application supports three data access technologies: JDBC, Hibernate, and
-JPA. By declaring `@ContextConfiguration` without any specific resource locations, the
-`AbstractClinicTests` class has its application context loaded from the default location,
-`AbstractClinicTests-context.xml`, which declares a common `DataSource`. Subclasses
-specify additional context locations that must declare a `PlatformTransactionManager` and
-a concrete implementation of `Clinic`.
-
-For example, the Hibernate implementation of the PetClinic tests contains the following
-implementation. For this example, `HibernateClinicTests` does not contain a single line
-of code. We need only to declare `@ContextConfiguration`, and the tests are inherited
-from `AbstractClinicTests`. Because `@ContextConfiguration` is declared without any
-specific resource locations, the Spring TestContext Framework loads an application
-context from all the beans defined in `AbstractClinicTests-context.xml` (that is, the
-inherited locations) and `HibernateClinicTests-context.xml`, with
-`HibernateClinicTests-context.xml` possibly overriding beans defined in
-`AbstractClinicTests-context.xml`. The following listing shows the definition of the
-`HibernateClinicTests` class:
-
-====
-[source,java,indent=0]
-[subs="verbatim,quotes"]
-----
-	@ContextConfiguration <1>
-	public class HibernateClinicTests extends AbstractClinicTests { }
-----
-<1> Load the application context from `AbstractClinicTests-context.xml` and `HibernateClinicTests-context.xml`.
-====
-
-In a large-scale application, the Spring configuration is often split across multiple
-files. Consequently, configuration locations are typically specified in a common base
-class for all application-specific integration tests. Such a base class can also add
-useful instance variables (populated by Dependency Injection, naturally), such as a
-`SessionFactory` in the case of an application that uses Hibernate.
-
-As far as possible, you should have exactly the same Spring configuration files in your
-integration tests as in the deployed environment. One likely point of difference concerns
-database connection pooling and transaction infrastructure. If you are deploying to a
-full-blown application server, you probably use its connection pool (available through
-JNDI) and JTA implementation. Thus, in production, you can use a `JndiObjectFactoryBean`
-or `<jee:jndi-lookup>` for the `DataSource` and `JtaTransactionManager`. JNDI and JTA are
-not available in out-of-container integration tests, so you should use a combination such
-as the Commons DBCP `BasicDataSource` and `DataSourceTransactionManager` or
-`HibernateTransactionManager` for them. You can factor out this variant behavior into a
-single XML file, having the choice between application server and a "`local`"
-configuration separated from all other configuration, which will not vary between the
-test and production environments. In addition, we recommend that you use properties files
-for connection settings. See the PetClinic application for an example.
 
 
 
