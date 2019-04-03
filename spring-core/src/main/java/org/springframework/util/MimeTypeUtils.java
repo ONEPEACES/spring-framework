@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,15 +28,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.springframework.lang.Nullable;
-import org.springframework.util.MimeType.SpecificityComparator;
 
 /**
  * Miscellaneous {@link MimeType} utility methods.
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
+ * @author Dimitrios Liapis
  * @since 4.0
  */
 public abstract class MimeTypeUtils {
@@ -50,7 +51,7 @@ public abstract class MimeTypeUtils {
 	/**
 	 * Comparator used by {@link #sortBySpecificity(List)}.
 	 */
-	public static final Comparator<MimeType> SPECIFICITY_COMPARATOR = new SpecificityComparator<>();
+	public static final Comparator<MimeType> SPECIFICITY_COMPARATOR = new MimeType.SpecificityComparator<>();
 
 	/**
 	 * Public constant mime type that includes all media ranges (i.e. "&#42;/&#42;").
@@ -152,9 +153,9 @@ public abstract class MimeTypeUtils {
 	 */
 	public static final String TEXT_XML_VALUE = "text/xml";
 
+
 	@Nullable
 	private static volatile Random random;
-
 
 	static {
 		ALL = MimeType.valueOf(ALL_VALUE);
@@ -248,21 +249,55 @@ public abstract class MimeTypeUtils {
 	}
 
 	/**
-	 * Parse the given, comma-separated string into a list of {@code MimeType} objects.
+	 * Parse the comma-separated string into a list of {@code MimeType} objects.
 	 * @param mimeTypes the string to parse
 	 * @return the list of mime types
-	 * @throws IllegalArgumentException if the string cannot be parsed
+	 * @throws InvalidMimeTypeException if the string cannot be parsed
 	 */
 	public static List<MimeType> parseMimeTypes(String mimeTypes) {
 		if (!StringUtils.hasLength(mimeTypes)) {
 			return Collections.emptyList();
 		}
-		String[] tokens = StringUtils.tokenizeToStringArray(mimeTypes, ",");
-		List<MimeType> result = new ArrayList<>(tokens.length);
-		for (String token : tokens) {
-			result.add(parseMimeType(token));
+		return tokenize(mimeTypes).stream()
+				.map(MimeTypeUtils::parseMimeType).collect(Collectors.toList());
+	}
+
+
+	/**
+	 * Tokenize the given comma-separated string of {@code MimeType} objects
+	 * into a {@code List<String>}. Unlike simple tokenization by ",", this
+	 * method takes into account quoted parameters.
+	 * @param mimeTypes the string to tokenize
+	 * @return the list of tokens
+	 * @since 5.1.3
+	 */
+	public static List<String> tokenize(String mimeTypes) {
+		if (!StringUtils.hasLength(mimeTypes)) {
+			return Collections.emptyList();
 		}
-		return result;
+		List<String> tokens = new ArrayList<>();
+		boolean inQuotes = false;
+		int startIndex = 0;
+		int i = 0;
+		while (i < mimeTypes.length()) {
+			switch (mimeTypes.charAt(i)) {
+				case '"':
+					inQuotes = !inQuotes;
+					break;
+				case ',':
+					if (!inQuotes) {
+						tokens.add(mimeTypes.substring(startIndex, i));
+						startIndex = i + 1;
+					}
+					break;
+				case '\\':
+					i++;
+					break;
+			}
+			i++;
+		}
+		tokens.add(mimeTypes.substring(startIndex));
+		return tokens;
 	}
 
 	/**
@@ -282,7 +317,6 @@ public abstract class MimeTypeUtils {
 		}
 		return builder.toString();
 	}
-
 
 	/**
 	 * Sorts the given list of {@code MimeType} objects by specificity.

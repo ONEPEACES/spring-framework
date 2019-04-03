@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,6 @@ package org.springframework.http.server.reactive;
 import java.nio.file.Path;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
@@ -32,6 +31,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.NettyDataBufferFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ZeroCopyHttpOutputMessage;
 import org.springframework.util.Assert;
@@ -49,16 +49,11 @@ class ReactorServerHttpResponse extends AbstractServerHttpResponse implements Ze
 
 
 	public ReactorServerHttpResponse(HttpServerResponse response, DataBufferFactory bufferFactory) {
-		super(bufferFactory, initHeaders(response));
+		super(bufferFactory, new HttpHeaders(new NettyHeadersAdapter(response.responseHeaders())));
 		Assert.notNull(response, "HttpServerResponse must not be null");
 		this.response = response;
 	}
 
-	private static HttpHeaders initHeaders(HttpServerResponse channel) {
-		channel.responseHeaders().remove(HttpHeaderNames.TRANSFER_ENCODING);
-		NettyHeadersAdapter headersMap = new NettyHeadersAdapter(channel.responseHeaders());
-		return new HttpHeaders(headersMap);
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -66,12 +61,23 @@ class ReactorServerHttpResponse extends AbstractServerHttpResponse implements Ze
 		return (T) this.response;
 	}
 
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public HttpStatus getStatusCode() {
+		HttpStatus httpStatus = super.getStatusCode();
+		if (httpStatus == null) {
+			HttpResponseStatus status = this.response.status();
+			httpStatus = status != null ? HttpStatus.resolve(status.code()) : null;
+		}
+		return httpStatus;
+	}
+
 
 	@Override
 	protected void applyStatusCode() {
 		Integer statusCode = getStatusCodeValue();
 		if (statusCode != null) {
-			this.response.status(HttpResponseStatus.valueOf(statusCode));
+			this.response.status(statusCode);
 		}
 	}
 
@@ -87,9 +93,6 @@ class ReactorServerHttpResponse extends AbstractServerHttpResponse implements Ze
 
 	@Override
 	protected void applyHeaders() {
-		if (getHeaders().getContentLength() == -1) {
-			this.response.chunkedTransfer(true);
-		}
 	}
 
 	@Override

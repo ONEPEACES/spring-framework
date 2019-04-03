@@ -5,16 +5,16 @@ This chapter covers Spring's Inversion of Control (IoC) container.
 
 
 
+
 [[beans-introduction]]
 == Introduction to the Spring IoC Container and Beans
 
 This chapter covers the Spring Framework implementation of the Inversion of Control
-(IoC) principle. (See <<overview.adoc#background-ioc,Inversion of Control>>.) IoC
-is also known as dependency injection (DI). It is a process whereby objects define
-their dependencies (that is, the other objects they work with) only through constructor
-arguments, arguments to a factory method, or properties that are set on the object
-instance after it is constructed or returned from a factory method. The container then
-injects those dependencies when it creates the bean. This process is fundamentally
+(IoC) principle. IoC is also known as dependency injection (DI). It is a process whereby
+objects define their dependencies (that is, the other objects they work with) only through
+constructor arguments, arguments to a factory method, or properties that are set on the
+object instance after it is constructed or returned from a factory method. The container
+then injects those dependencies when it creates the bean. This process is fundamentally
 the inverse (hence the name, Inversion of Control) of the bean itself
 controlling the instantiation or location of its dependencies by using direct
 construction of classes or a mechanism such as the Service Locator pattern.
@@ -100,16 +100,16 @@ Configuration metadata is traditionally supplied in a simple and intuitive XML f
 which is what most of this chapter uses to convey key concepts and features of the
 Spring IoC container.
 
-NOTE: XML-based metadata is not the only allowed form of configuration metadata. The
-Spring IoC container itself is totally decoupled from the format in which this
+NOTE: XML-based metadata is not the only allowed form of configuration metadata.
+The Spring IoC container itself is totally decoupled from the format in which this
 configuration metadata is actually written. These days, many developers choose
-<<beans-java,Java-based configuration>> for their Spring applications.
+<<beans-java, Java-based configuration>> for their Spring applications.
 
 For information about using other forms of metadata with the Spring container, see:
 
 * <<beans-annotation-config,Annotation-based configuration>>: Spring 2.5 introduced
   support for annotation-based configuration metadata.
-* <<beans-java,Java-based configuration>>: Starting with Spring 3.0, many features
+* <<beans-java, Java-based configuration>>: Starting with Spring 3.0, many features
   provided by the Spring JavaConfig project became part of the core Spring Framework.
   Thus, you can define beans external to your application classes by using Java rather
   than XML files. To use these new features, see the
@@ -186,11 +186,13 @@ as the local file system, the Java `CLASSPATH`, and so on.
 ----
 ====
 
-NOTE:After you learn about Spring's IoC container, you may want to know more about Spring's
+[NOTE]
+====
+After you learn about Spring's IoC container, you may want to know more about Spring's
 `Resource` abstraction (as described in <<resources>>), which provides a convenient
-mechanism for reading an InputStream from locations defined in a URI syntax. In
-particular, `Resource` paths are used to construct applications contexts, as described in
-<<resources-app-ctx>>.
+mechanism for reading an InputStream from locations defined in a URI syntax. In particular,
+`Resource` paths are used to construct applications contexts, as described in <<resources-app-ctx>>.
+====
 
 The following example shows the service layer objects `(services.xml)` configuration file:
 
@@ -254,7 +256,6 @@ collaborating objects. For details of configuring an object's dependencies, see
 <<beans-dependencies,Dependencies>>.
 
 
-
 [[beans-factory-xml-import]]
 ==== Composing XML-based Configuration Metadata
 
@@ -263,7 +264,7 @@ XML configuration file represents a logical layer or module in your architecture
 
 You can use the application context constructor to load bean definitions from all these
 XML fragments. This constructor takes multiple `Resource` locations, as was shown in the
-<<beans-factory-instantiation,previous section>>. Alternatively, use one or more
+<<beans-factory-instantiation, previous section>>. Alternatively, use one or more
 occurrences of the `<import/>` element to load bean definitions from another file or
 files. The following example shows how to do so:
 
@@ -312,7 +313,6 @@ system properties at runtime.
 The namespace itself provices the import directive feature. Further
 configuration features beyond plain bean definitions are available in a selection
 of XML namespaces provided by Spring -- for example, the `context` and `util` namespaces.
-
 
 
 [[groovy-bean-definition-dsl]]
@@ -492,14 +492,17 @@ ApplicationContext's BeanFactory through the `getBeanFactory()` method, which re
 BeanFactory `DefaultListableBeanFactory` implementation. `DefaultListableBeanFactory`
 supports this registration through the `registerSingleton(..)` and
 `registerBeanDefinition(..)` methods. However, typical applications work solely with beans
-defined through metadata bean definitions.
+defined through regular bean definition metadata.
 
-NOTE: Bean metadata and manually supplied singleton instances need to be registered as early
+[NOTE]
+====
+Bean metadata and manually supplied singleton instances need to be registered as early
 as possible, in order for the container to properly reason about them during autowiring
 and other introspection steps. While overriding existing metadata and existing
 singleton instances is supported to some degree, the registration of new beans at
 runtime (concurrently with live access to the factory) is not officially supported and may
 lead to concurrent access exceptions, inconsistent state in the bean container, or both.
+====
 
 
 
@@ -535,9 +538,9 @@ naming beans. That is, bean names start with a lowercase letter and are camel-ca
 from there. Examples of such names include `accountManager`,
 `accountService`, `userDao`, `loginController`, and so forth.
 
-Naming beans consistently makes your configuration easier to read and understand. Also, if
-you use Spring AOP, it helps a lot when applying advice to a set of beans related
-by name.
+Naming beans consistently makes your configuration easier to read and understand.
+Also, if you use Spring AOP, it helps a lot when applying advice to a set of beans
+related by name.
 ****
 
 NOTE: With component scanning in the classpath, Spring generates bean names for unnamed
@@ -546,7 +549,6 @@ and turning its initial character to lower-case. However, in the (unusual) speci
 case when there is more than one character and both the first and second characters
 are upper case, the original casing gets preserved. These are the same rules as
 defined by `java.beans.Introspector.decapitalize` (which Spring uses here).
-
 
 
 [[beans-beanname-alias]]
@@ -562,9 +564,9 @@ itself.
 Specifying all aliases where the bean is actually defined is not always adequate,
 however. It is sometimes desirable to introduce an alias for a bean that is defined
 elsewhere. This is commonly the case in large systems where configuration is split
-amongst each subsystem, with each subsystem having its own set of object definitions. In
-XML-based configuration metadata, you can use the `<alias/>` element to accomplish this.
-The following example shows how to do so:
+amongst each subsystem, with each subsystem having its own set of object definitions.
+In XML-based configuration metadata, you can use the `<alias/>` element to accomplish
+this. The following example shows how to do so:
 
 ====
 [source,xml,indent=0]
@@ -577,19 +579,19 @@ The following example shows how to do so:
 In this case, a bean (in the same container) named `fromName` may also,
 after the use of this alias definition, be referred to as `toName`.
 
-For example, the configuration metadata for subsystem A may refer to a DataSource by
-the name of `subsystemA-dataSource`. The configuration metadata for subsystem B may refer to
+For example, the configuration metadata for subsystem A may refer to a DataSource by the
+name of `subsystemA-dataSource`. The configuration metadata for subsystem B may refer to
 a DataSource by the name of `subsystemB-dataSource`. When composing the main application
 that uses both these subsystems, the main application refers to the DataSource by the
-name of `myApp-dataSource`. To have all three names refer to the same object, you can add
-the following alias definitions to the configuration metadata:
+name of `myApp-dataSource`. To have all three names refer to the same object, you can
+add the following alias definitions to the configuration metadata:
 
 ====
 [source,xml,indent=0]
 [subs="verbatim,quotes"]
 ----
-	<alias name="subsystemA-dataSource" alias="subsystemB-dataSource"/>
-	<alias name="subsystemA-dataSource" alias="myApp-dataSource" />
+	<alias name="myApp-dataSource" alias="subsystemA-dataSource"/>
+	<alias name="myApp-dataSource" alias="subsystemB-dataSource"/>
 ----
 ====
 
@@ -674,7 +676,6 @@ With XML-based configuration metadata you can specify your bean class as follows
 For details about the mechanism for supplying arguments to the constructor (if required)
 and setting object instance properties after the object is constructed, see
 <<beans-factory-collaborators,Injecting Dependencies>>.
-
 
 
 [[beans-factory-class-static-factory-method]]
@@ -891,8 +892,6 @@ injection:
 Notice that there is nothing special about this class. It is a POJO that
 has no dependencies on container specific interfaces, base classes or annotations.
 
-
-
 [[beans-factory-ctor-arguments-resolution]]
 ===== Constructor Argument Resolution
 
@@ -927,14 +926,14 @@ element.
 [subs="verbatim,quotes"]
 ----
 	<beans>
-		<bean id="thingOne" class="x.y.ThingOne">
-			<constructor-arg ref="thingTwo"/>
-			<constructor-arg ref="thingThree"/>
+		<bean id="beanOne" class="x.y.ThingOne">
+			<constructor-arg ref="beanTwo"/>
+			<constructor-arg ref="beanThree"/>
 		</bean>
 
-		<bean id="thingTwo" class="x.y.ThingTwo"/>
+		<bean id="beanTwo" class="x.y.ThingTwo"/>
 
-		<bean id="thingThree" class="x.y.ThingThree"/>
+		<bean id="beanThree" class="x.y.ThingThree"/>
 	</beans>
 ----
 ====
@@ -1024,8 +1023,8 @@ example shows:
 
 Keep in mind that, to make this work out of the box, your code must be compiled with the
 debug flag enabled so that Spring can look up the parameter name from the constructor.
-If you cannot or do not want to compile your code with the debug flag, you can use
-http://download.oracle.com/javase/6/docs/api/java/beans/ConstructorProperties.html[@ConstructorProperties]
+If you cannot or do not want to compile your code with the debug flag, you can use the
+http://download.oracle.com/javase/8/docs/api/java/beans/ConstructorProperties.html[@ConstructorProperties]
 JDK annotation to explicitly name your constructor arguments. The sample class would
 then have to look as follows:
 
@@ -1096,8 +1095,9 @@ load an entire Spring IoC container instance.
 ****
 Since you can mix constructor-based and setter-based DI, it is a good rule of thumb to
 use constructors for mandatory dependencies and setter methods or configuration methods
-for optional dependencies. Note that use of the <<beans-required-annotation,@Required>>
-annotation on a setter method can be used to make the property be a required dependency.
+for optional dependencies. Note that use of the <<beans-required-annotation, @Required>>
+annotation on a setter method can be used to make the property be a required dependency;
+however, constructor injection with programmatic validation of arguments is preferable.
 
 The Spring team generally advocates constructor injection, as it lets you implement
 application components as immutable objects and ensures that required dependencies
@@ -1129,8 +1129,8 @@ The container performs bean dependency resolution as follows:
   describes all the beans. Configuration metadata can be specified by XML, Java code, or
   annotations.
 * For each bean, its dependencies are expressed in the form of properties, constructor
-  arguments, or arguments to the static-factory method( if you use that instead of
-  a normal constructor). These dependencies are provided to the bean, when the bean is
+  arguments, or arguments to the static-factory method (if you use that instead of a
+  normal constructor). These dependencies are provided to the bean, when the bean is
   actually created.
 * Each property or constructor argument is an actual definition of the value to set, or
   a reference to another bean in the container.
@@ -1188,7 +1188,7 @@ to being injected into the dependent bean. This means that, if bean A has a depe
 bean B, the Spring IoC container completely configures bean B prior to invoking the
 setter method on bean A. In other words, the bean is instantiated (if it is not a
 pre-instantiated singleton), its dependencies are set, and the relevant lifecycle
-methods (such as a <<beans-factory-lifecycle-initializingbean,configured init method>>
+methods (such as a <<beans-factory-lifecycle-initializingbean, configured init method>>
 or the <<beans-factory-lifecycle-initializingbean,InitializingBean callback method>>)
 are invoked.
 
@@ -1357,12 +1357,11 @@ do not discuss those details here.
 [[beans-factory-properties-detailed]]
 === Dependencies and Configuration in Detail
 
-As mentioned in the <<beans-factory-collaborators,previous section>>, you can define bean
+As mentioned in the <<beans-factory-collaborators, previous section>>, you can define bean
 properties and constructor arguments as references to other managed beans (collaborators)
 or as values defined inline. Spring's XML-based configuration metadata supports
 sub-element types within its `<property/>` and `<constructor-arg/>` elements for this
 purpose.
-
 
 
 [[beans-value-element]]
@@ -1562,7 +1561,6 @@ XSD, since it does not provide value over a regular `bean` reference any more. C
 your existing `ref local` references to `ref bean` when upgrading to the 4.0 schema.
 
 
-
 [[beans-inner-beans]]
 ==== Inner Beans
 
@@ -1596,7 +1594,6 @@ for example, for a request-scoped inner bean contained within a singleton bean. 
 of the inner bean instance is tied to its containing bean, but destruction callbacks let it
 participate in the request scope's lifecycle. This is not a common scenario. Inner beans
 typically simply share their containing bean's scope.
-
 
 
 [[beans-collection-elements]]
@@ -1727,8 +1724,6 @@ exists. Hence, no ordering semantics are in effect for the collection types that
 the associated `Map`, `Set`, and `Properties` implementation types that the container
 uses internally.
 
-
-
 [[beans-collection-merge-limitations]]
 ===== Limitations of Collection Merging
 
@@ -1736,8 +1731,6 @@ You cannot merge different collection types (such as a `Map` and a `List`). If y
 do attempt to do so, an appropriate `Exception` is thrown. The `merge` attribute must be
 specified on the lower, inherited, child definition. Specifying the `merge` attribute on
 a parent collection definition is redundant and does not result in the desired merging.
-
-
 
 [[beans-collection-elements-strongly-typed]]
 ===== Strongly-typed collection
@@ -1786,7 +1779,6 @@ information about the element type of the strongly-typed `Map<String, Float>` is
 available by reflection. Thus, Spring's type conversion infrastructure recognizes the
 various value elements as being of type `Float`, and the string values (`9.99, 2.75`, and
 `3.99`) are converted into an actual `Float` type.
-
 
 
 [[beans-null-element]]
@@ -1839,7 +1831,6 @@ The preceding configuration is equivalent to the following Java code:
 	exampleBean.setEmail(null);
 ----
 ====
-
 
 
 [[beans-p-namespace]]
@@ -1926,7 +1917,6 @@ communicate this to your team members to avoid producing XML documents that use 
 three approaches at the same time.
 
 
-
 [[beans-c-namespace]]
 ==== XML Shortcut with the c-namespace
 
@@ -1947,27 +1937,28 @@ The following example uses the `c:` namespace to do the same thing as the from
 		xsi:schemaLocation="http://www.springframework.org/schema/beans
 			http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-		<bean id="thingOne" class="x.y.ThingTwo"/>
-		<bean id="thingTwo" class="x.y.ThingThree"/>
+		<bean id="beanTwo" class="x.y.ThingTwo"/>
+		<bean id="beanThree" class="x.y.ThingThree"/>
 
-		<!-- traditional declaration -->
-		<bean id="thingOne" class="x.y.ThingOne">
-			<constructor-arg ref="thingTwo"/>
-			<constructor-arg ref="thingThree"/>
-			<constructor-arg value="something@somewhere.com"/>
+		<!-- traditional declaration with optional argument names -->
+		<bean id="beanOne" class="x.y.ThingOne">
+			<constructor-arg name="thingTwo" ref="beanTwo"/>
+			<constructor-arg name="thingThree" ref="beanThree"/>
+			<constructor-arg name="email" value="something@somewhere.com"/>
 		</bean>
 
-		<!-- c-namespace declaration -->
-		<bean id="thingOne" class="x.y.ThingOne" c:thingTwo-ref="thingTwo" c:thingThree-ref="thingThree" c:email="something@somewhere.com"/>
+		<!-- c-namespace declaration with argument names -->
+		<bean id="beanOne" class="x.y.ThingOne" c:thingTwo-ref="beanTwo"
+			c:thingThree-ref="beanThree" c:email="something@somewhere.com"/>
 
 	</beans>
 ----
 ====
 
-The `c:` namespace uses the same conventions as the `p:` one (a trailing `-ref` for bean
-references) for setting the constructor arguments by their names. Similarly, it
-needs to be declared even though it is not defined in an XSD schema (it exists
-inside the Spring core).
+The `c:` namespace uses the same conventions as the `p:` one (a trailing `-ref` for
+bean references) for setting the constructor arguments by their names. Similarly,
+it needs to be declared in the XML file even though it is not defined in an XSD schema
+(it exists inside the Spring core).
 
 For the rare cases where the constructor argument names are not available (usually if
 the bytecode was compiled without debugging information), you can use fallback to the
@@ -1978,18 +1969,20 @@ argument indexes, as follows:
 [subs="verbatim,quotes"]
 ----
 	<!-- c-namespace index declaration -->
-	<bean id="thingOne" class="x.y.ThingOne" c:_0-ref="thingTwo" c:_1-ref="thingThree"/>
+	<bean id="beanOne" class="x.y.ThingOne" c:_0-ref="beanTwo" c:_1-ref="beanThree"
+		c:_2="something@somewhere.com"/>
 ----
 ====
 
 NOTE: Due to the XML grammar, the index notation requires the presence of the leading `_`,
 as XML attribute names cannot start with a number (even though some IDEs allow it).
+A corresponding index notation is also available for `<constructor-arg>` elements but
+not commonly used since the plain order of declaration is usually sufficient there.
 
 In practice, the constructor resolution
 <<beans-factory-ctor-arguments-resolution,mechanism>> is quite efficient in matching
 arguments, so unless you really need to, we recommend using the name notation
 through-out your configuration.
-
 
 
 [[beans-compound-property-names]]
@@ -2054,12 +2047,11 @@ delimiters):
 ----
 ====
 
-NOTE:
-The `depends-on` attribute in the bean definition can specify both an initialization-time
-dependency and, in the case of <<beans-factory-scopes-singleton,singleton>> beans
-only, a corresponding destroy-time dependency. Dependent beans that define a
-`depends-on` relationship with a given bean are destroyed first, prior to the given bean
-itself being destroyed. Thus, `depends-on` can also control shutdown order.
+NOTE: The `depends-on` attribute can specify both an initialization-time dependency and,
+in the case of <<beans-factory-scopes-singleton,singleton>> beans only, a corresponding
+destruction-time dependency. Dependent beans that define a `depends-on` relationship
+with a given bean are destroyed first, prior to the given bean itself being destroyed.
+Thus, `depends-on` can also control shutdown order.
 
 
 
@@ -2129,12 +2121,11 @@ advantages:
   during development, without negating the option of switching to explicit wiring when
   the code base becomes more stable.
 
-When using XML-based configuration metadata (see
-<<beans-factory-collaborators>>), you can specify autowire
-mode for a bean definition with the `autowire` attribute of the `<bean/>` element. The
-autowiring functionality has four modes. You specify autowiring per bean and
-can thus choose which ones to autowire. The following table describes the four autowiring
-modes:
+When using XML-based configuration metadata (see <<beans-factory-collaborators>>), you
+can specify the autowire mode for a bean definition with the `autowire` attribute of the
+`<bean/>` element. The autowiring functionality has four modes. You specify autowiring
+per bean and can thus choose which ones to autowire. The following table describes the
+four autowiring modes:
 
 [[beans-factory-autowiring-modes-tbl]]
 .Autowiring modes
@@ -2173,11 +2164,6 @@ strongly-typed `Map` instances if the expected key type is `String`. An autowire
 instance's values consist of all bean instances that match the expected type, and the
 `Map` instance's keys contain the corresponding bean names.
 
-You can combine autowire behavior with dependency checking, which is performed after
-autowiring completes.
-// TODO Describe how to do so or provide a link to a section that describes how to do so.
-
-
 
 [[beans-autowired-exceptions]]
 ==== Limitations and Disadvantages of Autowiring
@@ -2208,11 +2194,11 @@ In the latter scenario, you have several options:
 
 * Abandon autowiring in favor of explicit wiring.
 * Avoid autowiring for a bean definition by setting its `autowire-candidate` attributes
-  to `false`, as described in the <<beans-factory-autowire-candidate,next section>>.
+  to `false`, as described in the <<beans-factory-autowire-candidate, next section>>.
 * Designate a single bean definition as the primary candidate by setting the
   `primary` attribute of its `<bean/>` element to `true`.
-* Implement the more fine-grained control available
-  with annotation-based configuration, as described in <<beans-annotation-config>>.
+* Implement the more fine-grained control available with annotation-based configuration,
+  as described in <<beans-annotation-config>>.
 
 
 
@@ -2317,7 +2303,7 @@ https://spring.io/blog/2004/08/06/method-injection/[this blog entry].
 Lookup method injection is the ability of the container to override methods on
 container-managed beans and return the lookup result for another named bean in the
 container. The lookup typically involves a prototype bean, as in the scenario described
-in <<beans-factory-method-injection,the preceding section>>. The Spring Framework
+in <<beans-factory-method-injection, the preceding section>>. The Spring Framework
 implements this method injection by using bytecode generation from the CGLIB library to
 dynamically generate a subclass that overrides the method.
 
@@ -2600,10 +2586,11 @@ The following table describes the supported scopes:
   the context of a web-aware Spring `ApplicationContext`.
 |===
 
-NOTE: As of Spring 3.0, a thread scope is available but is not registered by default. For
-more information, see the documentation for
-{api-spring-framework}/context/support/SimpleThreadScope.html[`SimpleThreadScope`].
-For instructions on how to register this or any other custom scope, see
+NOTE: As of Spring 3.0, a thread scope is available but is not registered by default:
+see {api-spring-framework}/context/support/SimpleThreadScope.html[`SimpleThreadScope`].
+As of Spring 4.2, a transaction scope is available as well:
+{api-spring-framework}/transaction/support/SimpleTransactionScope.html[`SimpleTransactionScope`].
+For instructions on how to register these or any other custom scopes, see
 <<beans-factory-scopes-custom-using>>.
 
 
@@ -2818,7 +2805,7 @@ to do so:
 [source,java,indent=0]
 [subs="verbatim,quotes"]
 ----
-	**@RequestScope**
+	@RequestScope
 	@Component
 	public class LoginAction {
 		// ...
@@ -2858,7 +2845,7 @@ When using annotation-driven components or Java configuration, you can use the
 [source,java,indent=0]
 [subs="verbatim,quotes"]
 ----
-	**@SessionScope**
+	@SessionScope
 	@Component
 	public class UserPreferences {
 		// ...
@@ -2897,7 +2884,7 @@ following example shows how to do so:
 [source,java,indent=0]
 [subs="verbatim,quotes"]
 ----
-	**@ApplicationScope**
+	@ApplicationScope
 	@Component
 	public class AppPreferences {
 		// ...
@@ -3041,8 +3028,11 @@ shows:
 By default, when the Spring container creates a proxy for a bean that is marked up with
 the `<aop:scoped-proxy/>` element, a CGLIB-based class proxy is created.
 
-NOTE: CGLIB proxies intercept only public method calls! Do not call non-public methods
+[NOTE]
+====
+CGLIB proxies intercept only public method calls! Do not call non-public methods
 on such a proxy. They are not delegated to the actual scoped target object.
+====
 
 Alternatively, you can configure the Spring container to create standard JDK
 interface-based proxies for such scoped beans, by specifying `false` for the value of
@@ -3088,7 +3078,7 @@ To integrate your custom scopes into the Spring container, you need to implement
 `org.springframework.beans.factory.config.Scope` interface, which is described in this
 section. For an idea of how to implement your own scopes, see the `Scope`
 implementations that are supplied with the Spring Framework itself and the
-{api-spring-framework}/beans/factory/config/Scope.html[`Scope` Javadoc],
+{api-spring-framework}/beans/factory/config/Scope.html[`Scope`] javadoc,
 which explains the methods you need to implement in more detail.
 
 The `Scope` interface has four methods to get objects from the scope, remove them from
@@ -3131,7 +3121,7 @@ destroyed or when the specified object in the scope is destroyed:
 ----
 ====
 
-See the {api-spring-framework}/beans/factory/config/Scope.html#registerDestructionCallback[Javadoc]
+See the {api-spring-framework}/beans/factory/config/Scope.html#registerDestructionCallback[javadoc]
 or a Spring scope implementation for more information on destruction callbacks.
 
 The following method obtains the conversation identifier for the underlying scope:
@@ -3245,6 +3235,7 @@ bean itself that is scoped, not the object returned from `getObject()`.
 
 
 
+
 [[beans-factory-nature]]
 == Customizing the Nature of a Bean
 
@@ -3260,8 +3251,8 @@ of a bean. This section groups them as follows:
 [[beans-factory-lifecycle]]
 === Lifecycle Callbacks
 
-To interact with the container's management of the bean lifecycle, you can implement the
-Spring `InitializingBean` and `DisposableBean` interfaces. The container calls
+To interact with the container's management of the bean lifecycle, you can implement
+the Spring `InitializingBean` and `DisposableBean` interfaces. The container calls
 `afterPropertiesSet()` for the former and `destroy()` for the latter to let the bean
 perform certain actions upon initialization and destruction of your beans.
 
@@ -3269,11 +3260,11 @@ perform certain actions upon initialization and destruction of your beans.
 ====
 The JSR-250 `@PostConstruct` and `@PreDestroy` annotations are generally considered best
 practice for receiving lifecycle callbacks in a modern Spring application. Using these
-annotations means that your beans are not coupled to Spring-specific interfaces. For
-details, see <<beans-postconstruct-and-predestroy-annotations>>.
+annotations means that your beans are not coupled to Spring-specific interfaces.
+For details, see <<beans-postconstruct-and-predestroy-annotations>>.
 
 If you do not want to use the JSR-250 annotations but you still want to remove
-coupling, consider using of `init-method` and `destroy-method` object definition metadata.
+coupling, consider `init-method` and `destroy-method` bean definition metadata.
 ====
 
 Internally, the Spring Framework uses `BeanPostProcessor` implementations to process any
@@ -3287,7 +3278,6 @@ also implement the `Lifecycle` interface so that those objects can participate i
 startup and shutdown process, as driven by the container's own lifecycle.
 
 The lifecycle callback interfaces are described in this section.
-
 
 
 [[beans-factory-lifecycle-initializingbean]]
@@ -3332,8 +3322,8 @@ no-argument signature. With Java configuration, you can use the `initMethod` att
 ----
 ====
 
-The preceding example has almost exactly the same effect as the following example (which
-consists of two listings):
+The preceding example has almost exactly the same effect as the following example
+(which consists of two listings):
 
 ====
 [source,xml,indent=0]
@@ -3354,7 +3344,7 @@ consists of two listings):
 ----
 ====
 
-However, the second of the two preceding examples does not couple the code to Spring.
+However, the first of the two preceding examples does not couple the code to Spring.
 
 
 [[beans-factory-lifecycle-disposablebean]]
@@ -3420,7 +3410,7 @@ The preceding definition has almost exactly the same effect as the following def
 ----
 ====
 
-However, the second of the two preceding definitions does not couple the code to Spring.
+However, the first of the two preceding definitions does not couple the code to Spring.
 
 TIP: You can assign the `destroy-method` attribute of a `<bean>` element a special
 `(inferred)` value, which instructs Spring to automatically detect a public `close` or
@@ -3533,7 +3523,7 @@ configured with a different method name, then each configured method is executed
 order listed after this note. However, if the same method name is configured -- for example,
 `init()` for an initialization method -- for more than one of these lifecycle mechanisms,
 that method is executed once, as explained in the
-<<beans-factory-lifecycle-default-init-destroy-methods,preceding section>>.
+<<beans-factory-lifecycle-default-init-destroy-methods, preceding section>>.
 
 Multiple lifecycle mechanisms configured for the same bean, with different
 initialization methods, are called as follows:
@@ -3689,11 +3679,14 @@ automatically for a standard context implementation). The `phase` value and any
 
 
 [[beans-factory-shutdown]]
-==== Shutting Down the Spring IoC Container Gracefully in Non-web Applications
+==== Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
 
-NOTE: This section applies only to non-web applications. Spring's web-based
+[NOTE]
+====
+This section applies only to non-web applications. Spring's web-based
 `ApplicationContext` implementations already have code in place to gracefully shut down
 the Spring IoC container when the relevant web application is shut down.
+====
 
 If you use Spring's IoC container in a non-web application environment (for
 example, in a rich client desktop environment), register a shutdown hook with the
@@ -3752,16 +3745,16 @@ Thus, beans can programmatically manipulate the `ApplicationContext` that create
 through the `ApplicationContext` interface or by casting the reference to a known
 subclass of this interface (such as `ConfigurableApplicationContext`, which exposes
 additional functionality). One use would be the programmatic retrieval of other beans.
-Sometimes this capability is useful. However, in general, you should avoid it, because it
-couples the code to Spring and does not follow the Inversion of Control style, where
-collaborators are provided to beans as properties. Other methods of the
-`ApplicationContext` provide access to file resources, publishing application events, and
-accessing a `MessageSource`. These additional features are described in
+Sometimes this capability is useful. However, in general, you should avoid it, because
+it couples the code to Spring and does not follow the Inversion of Control style,
+where collaborators are provided to beans as properties. Other methods of the
+`ApplicationContext` provide access to file resources, publishing application events,
+and accessing a `MessageSource`. These additional features are described in
 <<context-introduction>>.
 
 As of Spring 2.5, autowiring is another alternative to obtain a reference to the
-`ApplicationContext`. The "`traditional`" `constructor` and `byType` autowiring modes (as
-described in <<beans-factory-autowire>>) can provide a dependency of type
+`ApplicationContext`. The "`traditional`" `constructor` and `byType` autowiring modes
+(as described in <<beans-factory-autowire>>) can provide a dependency of type
 `ApplicationContext` for a constructor argument or a setter method parameter,
 respectively. For more flexibility, including the ability to autowire fields and
 multiple parameter methods, use the new annotation-based autowiring features. If you do,
@@ -3795,11 +3788,10 @@ init-method.
 [[aware-list]]
 === Other `Aware` Interfaces
 
-Besides `ApplicationContextAware` and `BeanNameAware` (discussed
-<<beans-factory-aware,earlier>>), Spring offers a range of `Aware` interfaces that let
-beans indicate to the container that they require a certain infrastructure dependency. As
-a general rule, the name is a good indication of the dependency type. The following table
-summarizes the most important `Aware` interfaces:
+Besides `ApplicationContextAware` and `BeanNameAware` (discussed <<beans-factory-aware, earlier>>),
+Spring offers a wide range of `Aware` callback interfaces that let beans indicate to the container
+that they require a certain infrastructure dependency. As a general rule, the name indicates the
+dependency type. The following table summarizes the most important `Aware` interfaces:
 
 [[beans-factory-nature-aware-list]]
 .Aware interfaces
@@ -3828,7 +3820,7 @@ summarizes the most important `Aware` interfaces:
 
 | `BootstrapContextAware`
 | Resource adapter `BootstrapContext` the container runs in. Typically available only in
-  JCA aware `ApplicationContext` instances.
+  JCA-aware `ApplicationContext` instances.
 | <<integration.adoc#cci, JCA CCI>>
 
 | `LoadTimeWeaverAware`
@@ -3954,6 +3946,7 @@ context will actually (attempt to) pre-instantiate the `abstract` bean.
 
 
 
+
 [[beans-factory-extension]]
 == Container Extension Points
 
@@ -3968,29 +3961,30 @@ integration interfaces.
 === Customizing Beans by Using a `BeanPostProcessor`
 
 The `BeanPostProcessor` interface defines callback methods that you can implement to
-provide your own (or override the container's default) instantiation logic,
-dependency-resolution logic, and so forth. If you want to implement some custom logic
-after the Spring container finishes instantiating, configuring, and initializing a bean,
-you can plug in one or more `BeanPostProcessor` implementations.
+provide your own (or override the container's default) instantiation logic, dependency
+resolution logic, and so forth. If you want to implement some custom logic after the
+Spring container finishes instantiating, configuring, and initializing a bean, you can
+plug in one or more custom `BeanPostProcessor` implementations.
 
 You can configure multiple `BeanPostProcessor` instances, and you can control the order
-in which these `BeanPostProcessor` instances execute by setting the `order` property. You can
-set this property only if the `BeanPostProcessor` implements the `Ordered` interface. If
-you write your own `BeanPostProcessor`, you should consider implementing the `Ordered`
-interface, too. For further details, see the Javadoc of the {api-spring-framework}/beans/factory/config/BeanPostProcessor.html[`BeanPostProcessor`] and
-{api-spring-framework}/core/Ordered.html[`Ordered`] interfaces. See also the note on
-<<beans-factory-programmatically-registering-beanpostprocessors, programmatic
+in which these `BeanPostProcessor` instances execute by setting the `order` property.
+You can set this property only if the `BeanPostProcessor` implements the `Ordered`
+interface. If you write your own `BeanPostProcessor`, you should consider implementing
+the `Ordered` interface, too. For further details, see the javadoc of the
+{api-spring-framework}/beans/factory/config/BeanPostProcessor.html[`BeanPostProcessor`]
+and {api-spring-framework}/core/Ordered.html[`Ordered`] interfaces. See also the note
+on <<beans-factory-programmatically-registering-beanpostprocessors, programmatic
 registration of `BeanPostProcessor` instances>>.
 
 [NOTE]
 ====
-`BeanPostProcessor` instances operate on bean (or object) instances. That is, the
-Spring IoC container instantiates a bean instance and then `BeanPostProcessor` instances do
-their work.
+`BeanPostProcessor` instances operate on bean (or object) instances. That is,
+the Spring IoC container instantiates a bean instance and then `BeanPostProcessor`
+instances do their work.
 
 `BeanPostProcessor` instances are scoped per-container. This is relevant only if you
-use container hierarchies. If you define a `BeanPostProcessor` in one container, it
-post-processes only the beans in that container. In other words, beans that are
+use container hierarchies. If you define a `BeanPostProcessor` in one container,
+it post-processes only the beans in that container. In other words, beans that are
 defined in one container are not post-processed by a `BeanPostProcessor` defined in
 another container, even if both containers are part of the same hierarchy.
 
@@ -4003,12 +3997,12 @@ The `org.springframework.beans.factory.config.BeanPostProcessor` interface consi
 exactly two callback methods. When such a class is registered as a post-processor with
 the container, for each bean instance that is created by the container, the
 post-processor gets a callback from the container both before container
-initialization methods (such as `InitializingBean.afterPropertiesSet()`, after any
+initialization methods (such as `InitializingBean.afterPropertiesSet()` or any
 declared `init` method) are called, and after any bean initialization callbacks.
 The post-processor can take any action with the bean instance, including ignoring the
-callback completely. A bean post-processor typically checks for callback interfaces, or it
-may wrap a bean with a proxy. Some Spring AOP infrastructure classes are implemented as
-bean post-processors in order to provide proxy-wrapping logic.
+callback completely. A bean post-processor typically checks for callback interfaces,
+or it may wrap a bean with a proxy. Some Spring AOP infrastructure classes are
+implemented as bean post-processors in order to provide proxy-wrapping logic.
 
 An `ApplicationContext` automatically detects any beans that are defined in the
 configuration metadata that implements the `BeanPostProcessor` interface. The
@@ -4024,32 +4018,30 @@ interface, clearly indicating the post-processor nature of that bean. Otherwise,
 Since a `BeanPostProcessor` needs to be instantiated early in order to apply to the
 initialization of other beans in the context, this early type detection is critical.
 
-
-
 [[beans-factory-programmatically-registering-beanpostprocessors]]
 .Programmatically registering `BeanPostProcessor` instances
 NOTE: While the recommended approach for `BeanPostProcessor` registration is through
-`ApplicationContext` auto-detection (as described earlier), you can
-register them programmatically against a `ConfigurableBeanFactory` by using the
-`addBeanPostProcessor` method. This can be useful when you need to evaluate conditional
-logic before registration or even for copying bean post processors across contexts in a
-hierarchy. Note, however, that `BeanPostProcessor` instances added programmatically do not
-respect the `Ordered` interface. Here, it is the order of registration that
-dictates the order of execution. Note also that `BeanPostProcessor` instances registered
-programmatically are always processed before those registered through auto-detection,
-regardless of any explicit ordering.
+`ApplicationContext` auto-detection (as described earlier), you can register them
+programmatically against a `ConfigurableBeanFactory` by using the `addBeanPostProcessor`
+method. This can be useful when you need to evaluate conditional logic before
+registration or even for copying bean post processors across contexts in a hierarchy.
+Note, however, that `BeanPostProcessor` instances added programmatically do not respect
+the `Ordered` interface. Here, it is the order of registration that dictates the order
+of execution. Note also that `BeanPostProcessor` instances registered programmatically
+are always processed before those registered through auto-detection, regardless of any
+explicit ordering.
 
 .`BeanPostProcessor` instances and AOP auto-proxying
 [NOTE]
 ====
 Classes that implement the `BeanPostProcessor` interface are special and are treated
-differently by the container. All `BeanPostProcessor` instances and beans that they directly reference
-are instantiated on startup, as part of the special startup phase of the
-`ApplicationContext`. Next, all `BeanPostProcessor` instances are registered in a sorted fashion
-and applied to all further beans in the container. Because AOP auto-proxying is
-implemented as a `BeanPostProcessor` itself, neither `BeanPostProcessor` instances nor the beans
-they directly reference are eligible for auto-proxying and, thus, do not have aspects
-woven into them.
+differently by the container. All `BeanPostProcessor` instances and beans that they
+directly reference are instantiated on startup, as part of the special startup phase
+of the `ApplicationContext`. Next, all `BeanPostProcessor` instances are registered
+in a sorted fashion and applied to all further beans in the container. Because AOP
+auto-proxying is implemented as a `BeanPostProcessor` itself, neither `BeanPostProcessor`
+instances nor the beans they directly reference are eligible for auto-proxying and,
+thus, do not have aspects woven into them.
 
 For any such bean, you should see an informational log message: `Bean someBean is not
 eligible for getting processed by all BeanPostProcessor interfaces (for example: not
@@ -4066,7 +4058,6 @@ Spring accesses other beans for matching them by type.
 
 The following examples show how to write, register, and use `BeanPostProcessor` instances
 in an `ApplicationContext`.
-
 
 
 [[beans-factory-extension-bpp-examples-hw]]
@@ -4171,7 +4162,6 @@ org.springframework.scripting.groovy.GroovyMessenger@272961
 ====
 
 
-
 [[beans-factory-extension-bpp-examples-rabpp]]
 ==== Example: The `RequiredAnnotationBeanPostProcessor`
 
@@ -4199,7 +4189,7 @@ You can configure multiple `BeanFactoryPostProcessor` instances, and you can con
 which these `BeanFactoryPostProcessor` instances run by setting the `order` property.
 However, you can only set this property if the `BeanFactoryPostProcessor` implements the
 `Ordered` interface. If you write your own `BeanFactoryPostProcessor`, you should
-consider implementing the `Ordered` interface, too. See the Javadoc of the
+consider implementing the `Ordered` interface, too. See the javadoc of the
 {api-spring-framework}/beans/factory/config/BeanFactoryPostProcessor.html[`BeanFactoryPostProcessor`] and {api-spring-framework}/core/Ordered.html[`Ordered`] interfaces for more details.
 
 [NOTE]
@@ -4237,7 +4227,6 @@ NOTE: As with ``BeanPostProcessor``s , you typically do not want to configure
 Thus, marking it for lazy initialization will be ignored, and the
 `Bean(Factory)PostProcessor` will be instantiated eagerly even if you set the
 `default-lazy-init` attribute to `true` on the declaration of your `<beans />` element.
-
 
 
 [[beans-factory-placeholderconfigurer]]
@@ -4318,7 +4307,7 @@ the following three supported integer values:
 * `override` (2): Check system properties first, before trying the specified
   properties files. This lets system properties override any other property source.
 
-See the {api-spring-framework}/beans/factory/config/PropertyPlaceholderConfigurer.html[`PropertyPlaceholderConfigurer`] Javadoc for more information.
+See the {api-spring-framework}/beans/factory/config/PropertyPlaceholderConfigurer.html[`PropertyPlaceholderConfigurer`] javadoc for more information.
 
 [TIP]
 =====
@@ -4347,7 +4336,6 @@ If the class cannot be resolved at runtime to a valid class, resolution of the b
 fails when it is about to be created, which is during the `preInstantiateSingletons()`
 phase of an `ApplicationContext` for a non-lazy-init bean.
 =====
-
 
 
 [[beans-factory-overrideconfigurer]]
@@ -4470,7 +4458,7 @@ while others argue that annotated classes are no longer POJOs and, furthermore, 
 configuration becomes decentralized and harder to control.
 
 No matter the choice, Spring can accommodate both styles and even mix them together.
-It is worth pointing out that through its <<beans-java,JavaConfig>> option, Spring lets
+It is worth pointing out that through its <<beans-java, JavaConfig>> option, Spring lets
 annotations be used in a non-invasive way, without touching the target components
 source code and that, in terms of tooling, all configuration styles are supported by the
 https://spring.io/tools/sts[Spring Tool Suite].
@@ -4493,8 +4481,11 @@ Injection for Java) annotations contained in the `javax.inject` package such as 
 and `@Named`. Details about those annotations can be found in the
 <<beans-standard-annotations,relevant section>>.
 
-NOTE: Annotation injection is performed before XML injection. Thus, the XML
-configuration overrides the annotations for properties wired through both approaches.
+[NOTE]
+====
+Annotation injection is performed before XML injection. Thus, the XML configuration
+overrides the annotations for properties wired through both approaches.
+====
 
 As always, you can register them as individual bean definitions, but they can also be
 implicitly registered by including the following tag in an XML-based Spring
@@ -4526,11 +4517,14 @@ configuration (notice the inclusion of the `context` namespace):
 and the aforementioned
 {api-spring-framework}/beans/factory/annotation/RequiredAnnotationBeanPostProcessor.html[`RequiredAnnotationBeanPostProcessor`].)
 
-NOTE: `<context:annotation-config/>` only looks for annotations on beans in the same
+[NOTE]
+====
+`<context:annotation-config/>` only looks for annotations on beans in the same
 application context in which it is defined. This means that, if you put
 `<context:annotation-config/>` in a `WebApplicationContext` for a `DispatcherServlet`,
 it only checks for `@Autowired` beans in your controllers, and not your services. See
 <<web.adoc#mvc-servlet, The DispatcherServlet>> for more information.
+====
 
 
 
@@ -4561,18 +4555,28 @@ example:
 This annotation indicates that the affected bean property must be populated at
 configuration time, through an explicit property value in a bean definition or through
 autowiring. The container throws an exception if the affected bean property has not been
-populated. This allows for eager and explicit failure, avoiding `NullPointerException` instances
-or the like later on. We still recommend that you put assertions into the bean
-class itself (for example, into an init method). Doing so enforces those required
+populated. This allows for eager and explicit failure, avoiding `NullPointerException`
+instances or the like later on. We still recommend that you put assertions into the
+bean class itself (for example, into an init method). Doing so enforces those required
 references and values even when you use the class outside of a container.
+
+[NOTE]
+====
+The `@Required` annotation is formally deprecated as of Spring Framework 5.1, in favor
+of using constructor injection for required settings (or a custom implementation of
+`InitializingBean.afterPropertiesSet()` along with bean property setter methods).
+====
 
 
 
 [[beans-autowired-annotation]]
 === Using `@Autowired`
 
-NOTE: JSR 330's `@Inject` annotation can be used in place of Spring's `@Autowired` annotation
-in the examples included in this section. See <<beans-standard-annotations,here>> for more details.
+[NOTE]
+====
+JSR 330's `@Inject` annotation can be used in place of Spring's `@Autowired` annotation in the
+examples included in this section. See <<beans-standard-annotations,here>> for more details.
+====
 
 You can apply the `@Autowired` annotation to constructors, as the following example shows:
 
@@ -4594,10 +4598,13 @@ You can apply the `@Autowired` annotation to constructors, as the following exam
 ----
 ====
 
-NOTE: As of Spring Framework 4.3, an `@Autowired` annotation on such a constructor is
+[NOTE]
+====
+As of Spring Framework 4.3, an `@Autowired` annotation on such a constructor is
 no longer necessary if the target bean defines only one constructor to begin with.
 However, if several constructors are available, at least one must be annotated to
 teach the container which one to use.
+====
 
 You can also apply the `@Autowired` annotation to "`traditional`" setter
 methods, as the following example shows:
@@ -4854,10 +4861,13 @@ an `ApplicationContext` object:
 	}
 ----
 
-NOTE: The `@Autowired`, `@Inject`, `@Resource`, and `@Value` annotations are handled by Spring
-`BeanPostProcessor` implementations. This means that you cannot apply these
-annotations within your own `BeanPostProcessor` or `BeanFactoryPostProcessor` types (if
-any). These types must be 'wired up' explicitly by using XML or a Spring `@Bean` method.
+[NOTE]
+====
+The `@Autowired`, `@Inject`, `@Value`, and `@Resource` annotations are handled by Spring
+`BeanPostProcessor` implementations. This means that you cannot apply these annotations
+within your own `BeanPostProcessor` or `BeanFactoryPostProcessor` types (if any).
+These types must be 'wired up' explicitly by using XML or a Spring `@Bean` method.
+====
 
 
 
@@ -4882,7 +4892,7 @@ primary `MovieCatalog`:
 	public class MovieConfiguration {
 
 		@Bean
-		**@Primary**
+		@Primary
 		public MovieCatalog firstMovieCatalog() { ... }
 
 		@Bean
@@ -4927,7 +4937,7 @@ The corresponding bean definitions follow:
 
 		<context:annotation-config/>
 
-		<bean class="example.SimpleMovieCatalog" **primary="true"**>
+		<bean class="example.SimpleMovieCatalog" primary="true">
 			<!-- inject any dependencies required by this bean -->
 		</bean>
 
@@ -4960,7 +4970,7 @@ shown in the following example:
 	public class MovieRecommender {
 
 		@Autowired
-		**@Qualifier("main")**
+		@Qualifier("main")
 		private MovieCatalog movieCatalog;
 
 		// ...
@@ -4982,7 +4992,7 @@ method parameters, as shown in the following example:
 		private CustomerPreferenceDao customerPreferenceDao;
 
 		@Autowired
-		public void prepare(**@Qualifier("main")**MovieCatalog movieCatalog,
+		public void prepare(@Qualifier("main") MovieCatalog movieCatalog,
 				CustomerPreferenceDao customerPreferenceDao) {
 			this.movieCatalog = movieCatalog;
 			this.customerPreferenceDao = customerPreferenceDao;
@@ -5102,7 +5112,7 @@ provide the `@Qualifier` annotation within your definition, as the following exa
 ----
 	@Target({ElementType.FIELD, ElementType.PARAMETER})
 	@Retention(RetentionPolicy.RUNTIME)
-	**@Qualifier**
+	@Qualifier
 	public @interface Genre {
 
 		String value();
@@ -5120,13 +5130,13 @@ following example shows:
 	public class MovieRecommender {
 
 		@Autowired
-		**@Genre("Action")**
+		@Genre("Action")
 		private MovieCatalog actionCatalog;
 
 		private MovieCatalog comedyCatalog;
 
 		@Autowired
-		public void setComedyCatalog(**@Genre("Comedy")** MovieCatalog comedyCatalog) {
+		public void setComedyCatalog(@Genre("Comedy") MovieCatalog comedyCatalog) {
 			this.comedyCatalog = comedyCatalog;
 		}
 
@@ -5158,12 +5168,12 @@ demonstrates both approaches:
 		<context:annotation-config/>
 
 		<bean class="example.SimpleMovieCatalog">
-			**<qualifier type="Genre" value="Action"/>**
+			<qualifier type="Genre" value="Action"/>
 			<!-- inject any dependencies required by this bean -->
 		</bean>
 
 		<bean class="example.SimpleMovieCatalog">
-			**<qualifier type="example.Genre" value="Comedy"/>**
+			<qualifier type="example.Genre" value="Comedy"/>
 			<!-- inject any dependencies required by this bean -->
 		</bean>
 
@@ -5446,14 +5456,14 @@ attribute set to `true`, it is selected.
 [[beans-resource-annotation]]
 === Injection with `@Resource`
 
-Spring also supports injection by using the JSR-250 `@Resource` annotation on fields or
-bean property setter methods. This is a common pattern in Java EE 5 and 6 (for example,
-in JSF 1.2 managed beans or JAX-WS 2.0 endpoints). Spring supports this pattern for
-Spring-managed objects as well.
+Spring also supports injection by using the JSR-250 `@Resource` annotation
+(`javax.annotation.Resource`) on fields or bean property setter methods.
+This is a common pattern in Java EE: for example, in JSF-managed beans and JAX-WS
+endpoints. Spring supports this pattern for Spring-managed objects as well.
 
-`@Resource` takes a name attribute. By default, Spring interprets that value as the
-bean name to be injected. In other words, it follows by-name semantics, as
-demonstrated in the following example:
+`@Resource` takes a name attribute. By default, Spring interprets that value as
+the bean name to be injected. In other words, it follows by-name semantics,
+as demonstrated in the following example:
 
 ====
 [source,java,indent=0]
@@ -5485,7 +5495,7 @@ named `movieFinder` injected into its setter method:
 
 		private MovieFinder movieFinder;
 
-		**@Resource**
+		@Resource
 		public void setMovieFinder(MovieFinder movieFinder) {
 			this.movieFinder = movieFinder;
 		}
@@ -5494,8 +5504,8 @@ named `movieFinder` injected into its setter method:
 ====
 
 NOTE: The name provided with the annotation is resolved as a bean name by the
-`ApplicationContext` of which the `CommonAnnotationBeanPostProcessor` is aware. The
-names can be resolved through JNDI if you configure Spring's
+`ApplicationContext` of which the `CommonAnnotationBeanPostProcessor` is aware.
+The names can be resolved through JNDI if you configure Spring's
 {api-spring-framework}/jndi/support/SimpleJndiBeanFactory.html[`SimpleJndiBeanFactory`]
 explicitly. However, we recommend that you rely on the default behavior and
 use Spring's JNDI lookup capabilities to preserve the level of indirection.
@@ -5507,7 +5517,7 @@ and resolves well known resolvable dependencies: the `BeanFactory`,
 interfaces.
 
 Thus, in the following example, the `customerPreferenceDao` field first looks for a bean
-named customerPreferenceDao and then falls back to a primary type match for the type
+named "customerPreferenceDao" and then falls back to a primary type match for the type
 `CustomerPreferenceDao`:
 
 ====
@@ -5538,15 +5548,16 @@ named customerPreferenceDao and then falls back to a primary type match for the 
 === Using `@PostConstruct` and `@PreDestroy`
 
 The `CommonAnnotationBeanPostProcessor` not only recognizes the `@Resource` annotation
-but also the JSR-250 lifecycle annotations. Introduced in Spring 2.5, the support
-for these annotations offers yet another alternative to those described in
+but also the JSR-250 lifecycle annotations: `javax.annotation.PostConstruct` and
+`javax.annotation.PreDestroy`. Introduced in Spring 2.5, the support for these
+annotations offers an alternative to the lifecycle callback mechanism described in
 <<beans-factory-lifecycle-initializingbean,initialization callbacks>> and
 <<beans-factory-lifecycle-disposablebean,destruction callbacks>>. Provided that the
-`CommonAnnotationBeanPostProcessor` is registered within the Spring
-`ApplicationContext`, a method carrying one of these annotations is invoked at the same
-point in the lifecycle as the corresponding Spring lifecycle interface method or
-explicitly declared callback method. In the following example, the cache is
-pre-populated upon initialization and cleared upon destruction:
+`CommonAnnotationBeanPostProcessor` is registered within the Spring `ApplicationContext`,
+a method carrying one of these annotations is invoked at the same point in the lifecycle
+as the corresponding Spring lifecycle interface method or explicitly declared callback
+method. In the following example, the cache is pre-populated upon initialization and
+cleared upon destruction:
 
 ====
 [source,java,indent=0]
@@ -5567,8 +5578,18 @@ pre-populated upon initialization and cleared upon destruction:
 ----
 ====
 
-NOTE: For details about the effects of combining various lifecycle mechanisms, see
+For details about the effects of combining various lifecycle mechanisms, see
 <<beans-factory-lifecycle-combined-effects>>.
+
+[NOTE]
+====
+Like `@Resource`, the `@PostConstruct` and `@PreDestroy` annotation types were a part
+of the standard Java libraries from JDK 6 to 8. However, the entire `javax.annotation`
+package got separated from the core Java modules in JDK 9 and eventually removed in
+JDK 11. If needed, the `javax.annotation-api` artifact needs to be obtained via Maven
+Central now, simply to be added to the application's classpath like any other library.
+====
+
 
 
 
@@ -5588,10 +5609,13 @@ can use annotations (for example, `@Component`), AspectJ type expressions, or yo
 custom filter criteria to select which classes have bean definitions registered with
 the container.
 
-NOTE: Starting with Spring 3.0, many features provided by the Spring JavaConfig project are
+[NOTE]
+====
+Starting with Spring 3.0, many features provided by the Spring JavaConfig project are
 part of the core Spring Framework. This allows you to define beans using Java rather
 than using the traditional XML files. Take a look at the `@Configuration`, `@Bean`,
 `@Import`, and `@DependsOn` annotations for examples of how to use these new features.
+====
 
 
 
@@ -5623,9 +5647,9 @@ supported as a marker for automatic exception translation in your persistence la
 === Using Meta-annotations and Composed Annotations
 
 Many of the annotations provided by Spring can be used as meta-annotations in your
-own code. A meta-annotation is an annotation that can be applied to another
-annotation. For example, the `@Service` annotation mentioned <<beans-stereotype-annotations,earlier>> is meta-annotated with
-`@Component`, as the following example shows:
+own code. A meta-annotation is an annotation that can be applied to another annotation.
+For example, the `@Service` annotation mentioned <<beans-stereotype-annotations, earlier>>
+is meta-annotated with `@Component`, as the following example shows:
 
 ====
 [source,java,indent=0]
@@ -5680,7 +5704,7 @@ You can then use `@SessionScope` without declaring the `proxyMode` as follows:
 [subs="verbatim,quotes"]
 ----
 	@Service
-	**@SessionScope**
+	@SessionScope
 	public class SessionScopedService {
 		// ...
 	}
@@ -5694,7 +5718,7 @@ You can also override the value for the `proxyMode`, as the following example sh
 [subs="verbatim,quotes"]
 ----
 	@Service
-	**@SessionScope(proxyMode = ScopedProxyMode.INTERFACES)**
+	@SessionScope(proxyMode = ScopedProxyMode.INTERFACES)
 	public class SessionScopedUserService implements UserService {
 		// ...
 	}
@@ -5789,16 +5813,16 @@ TIP: The use of `<context:component-scan>` implicitly enables the functionality 
 ====
 The scanning of classpath packages requires the presence of corresponding directory
 entries in the classpath. When you build JARs with Ant, make sure that you do not
-activate the files-only switch of the JAR task. Also, classpath directories may not
-be exposed based on security policies in some environments -- for example, standalone apps on
+activate the files-only switch of the JAR task. Also, classpath directories may not be
+exposed based on security policies in some environments -- for example, standalone apps on
 JDK 1.7.0_45 and higher (which requires 'Trusted-Library' setup in your manifests -- see
 http://stackoverflow.com/questions/19394570/java-jre-7u45-breaks-classloader-getresources).
 
 On JDK 9's module path (Jigsaw), Spring's classpath scanning generally works as expected.
 However, make sure that your component classes are exported in your `module-info`
 descriptors. If you expect Spring to invoke non-public members of your classes, make
-sure that they are 'opened' (that is, that they use an `opens` declaration instead of an `exports`
-declaration in your `module-info` descriptor).
+sure that they are 'opened' (that is, that they use an `opens` declaration instead of an
+`exports` declaration in your `module-info` descriptor).
 ====
 
 Furthermore, the `AutowiredAnnotationBeanPostProcessor` and
@@ -6085,11 +6109,11 @@ classes were detected, the names would be `myMovieLister` and `movieFinderImpl`:
 ----
 ====
 
-NOTE: If you do not want to rely on the default bean-naming strategy, you can provide a custom
-bean-naming strategy. First, implement the
+NOTE: If you do not want to rely on the default bean-naming strategy, you can provide a
+custom bean-naming strategy. First, implement the
 {api-spring-framework}/beans/factory/support/BeanNameGenerator.html[`BeanNameGenerator`]
-interface, and be sure to include a default no-arg constructor. Then, provide the
-fully qualified class name when configuring the scanner, as the following example annotation
+interface, and be sure to include a default no-arg constructor. Then, provide the fully
+qualified class name when configuring the scanner, as the following example annotation
 and bean definition show:
 
 ====
@@ -6223,7 +6247,7 @@ technique:
 [subs="verbatim,quotes"]
 ----
 	@Component
-	**@Qualifier("Action")**
+	@Qualifier("Action")
 	public class ActionMovieCatalog implements MovieCatalog {
 		// ...
 	}
@@ -6233,7 +6257,7 @@ technique:
 [subs="verbatim,quotes"]
 ----
 	@Component
-	**@Genre("Action")**
+	@Genre("Action")
 	public class ActionMovieCatalog implements MovieCatalog {
 		// ...
 	}
@@ -6243,7 +6267,7 @@ technique:
 [subs="verbatim,quotes"]
 ----
 	@Component
-	**@Offline**
+	@Offline
 	public class CachingMovieCatalog implements MovieCatalog {
 		// ...
 	}
@@ -6262,7 +6286,10 @@ metadata is provided per-instance rather than per-class.
 
 While classpath scanning is very fast, it is possible to improve the startup performance
 of large applications by creating a static list of candidates at compilation time. In this
-mode, all modules of the application must use this mechanism as, when the
+mode, all modules that are target of component scan must use this mechanism.
+
+NOTE: Your existing `@ComponentScan` or `<context:component-scan` directives must stay as
+is to request the context to scan candidates in certain packages. When the
 `ApplicationContext` detects such an index, it automatically uses it rather than scanning
 the classpath.
 
@@ -6285,14 +6312,28 @@ how to do so with Maven:
 ----
 ====
 
-The following example shows how to do so with Gradle:
+With Gradle 4.5 and earlier, the dependency should be declared in the `compileOnly`
+configuration, as shown in the following example:
 
 ====
 [source,groovy,indent=0]
 [subs="verbatim,quotes,attributes"]
 ----
 	dependencies {
-		compileOnly("org.springframework:spring-context-indexer:{spring-version}")
+		compileOnly "org.springframework:spring-context-indexer:{spring-version}"
+	}
+----
+====
+
+With Gradle 4.6 and later, the dependency should be declared in the `annotationProcessor`
+configuration, as shown in the following example:
+
+====
+[source,groovy,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+	dependencies {
+		annotationProcessor "org.springframework:spring-context-indexer:{spring-version}"
 	}
 ----
 ====
@@ -6300,13 +6341,13 @@ The following example shows how to do so with Gradle:
 That process generates a `META-INF/spring.components` file that is
 included in the jar file.
 
-NOTE: When working with this mode in your IDE, the `spring-context-indexer` must be registered
-as an annotation processor to make sure the index is up-to-date when candidate components
-are updated.
+NOTE: When working with this mode in your IDE, the `spring-context-indexer` must be
+registered as an annotation processor to make sure the index is up-to-date when
+candidate components are updated.
 
-TIP: The index is enabled automatically when a `META-INF/spring.components` is found on the
-classpath. If an index is partially available for some libraries (or use cases) but
-could not be built for the whole application, you can fallback to a regular classpath
+TIP: The index is enabled automatically when a `META-INF/spring.components` is found
+on the classpath. If an index is partially available for some libraries (or use cases)
+but could not be built for the whole application, you can fallback to a regular classpath
 arrangement (as though no index was present at all) by setting `spring.index.ignore` to
 `true`, either as a system property or in a `spring.properties` file at the root of the
 classpath.
@@ -6526,8 +6567,8 @@ exact same way as when you use Spring annotations, as the following example show
 ====
 
 NOTE: In contrast to `@Component`, the JSR-330 `@Named` and the JSR-250 `ManagedBean`
-annotations are not composable. You should use Spring's stereotype model for building custom
-component annotations.
+annotations are not composable. You should use Spring's stereotype model for building
+custom component annotations.
 
 
 
@@ -6760,7 +6801,6 @@ example shows how to do so:
 ====
 
 
-
 [[beans-java-instantiating-container-scan]]
 ==== Enabling Component Scanning with `scan(String...)`
 
@@ -6814,13 +6854,11 @@ following example shows:
 ----
 ====
 
-NOTE: Remember that `@Configuration` classes are <<beans-meta-annotations,meta-annotated>>
+NOTE: Remember that `@Configuration` classes are <<beans-meta-annotations, meta-annotated>>
 with `@Component`, so they are candidates for component-scanning. In the preceding example,
 assuming that `AppConfig` is declared within the `com.acme` package (or any package
-underneath), it is picked up during the call to `scan()`. Upon `refresh()`, all
-its `@Bean` methods are processed and registered as bean definitions within the
-container.
-
+underneath), it is picked up during the call to `scan()`. Upon `refresh()`, all its `@Bean`
+methods are processed and registered as bean definitions within the container.
 
 
 [[beans-java-instantiating-container-web]]
@@ -6896,14 +6934,13 @@ init-param):
 
 `@Bean` is a method-level annotation and a direct analog of the XML `<bean/>` element.
 The annotation supports some of the attributes offered by `<bean/>`, such as:
-* <<beans-factory-lifecycle-initializingbean,init-method>>
-* <<beans-factory-lifecycle-disposablebean,destroy-method>>
+* <<beans-factory-lifecycle-initializingbean, init-method>>
+* <<beans-factory-lifecycle-disposablebean, destroy-method>>
 * <<beans-factory-autowire,autowiring>>
 * `name`.
 
 You can use the `@Bean` annotation in a `@Configuration`-annotated or in a
 `@Component`-annotated class.
-
 
 
 [[beans-java-declaring-a-bean]]
@@ -6986,14 +7023,13 @@ implementation type, it is safer to declare the most specific return type possib
 (at least as specific as required by the injection points that refer to your bean).
 
 
-
 [[beans-java-dependencies]]
 ==== Bean Dependencies
 
 A `@Bean`-annotated method can have an arbitrary number of parameters that describe the
 dependencies required to build that bean. For instance, if our `TransferService`
 requires an `AccountRepository`, we can materialize that dependency with a method
-parameter, as the followig example shows:
+parameter, as the following example shows:
 
 ====
 [source,java,indent=0]
@@ -7011,8 +7047,7 @@ parameter, as the followig example shows:
 ====
 
 The resolution mechanism is pretty much identical to constructor-based dependency
-injection. See <<beans-constructor-injection,the relevant section>> for more details.
-
+injection. See <<beans-constructor-injection, the relevant section>> for more details.
 
 
 [[beans-java-lifecycle-callbacks]]
@@ -7020,17 +7055,17 @@ injection. See <<beans-constructor-injection,the relevant section>> for more det
 
 Any classes defined with the `@Bean` annotation support the regular lifecycle callbacks
 and can use the `@PostConstruct` and `@PreDestroy` annotations from JSR-250. See
-<<beans-postconstruct-and-predestroy-annotations,JSR-250 annotations>> for further
+<<beans-postconstruct-and-predestroy-annotations, JSR-250 annotations>> for further
 details.
 
-The regular Spring <<beans-factory-nature,lifecycle>> callbacks are fully supported as
+The regular Spring <<beans-factory-nature, lifecycle>> callbacks are fully supported as
 well. If a bean implements `InitializingBean`, `DisposableBean`, or `Lifecycle`, their
 respective methods are called by the container.
 
-The standard set of `*Aware` interfaces (such as <<beans-beanfactory,BeanFactoryAware>>,
-<<beans-factory-aware,BeanNameAware>>,
-<<context-functionality-messagesource,MessageSourceAware>>,
-<<beans-factory-aware,ApplicationContextAware>>, and so on) are also fully supported.
+The standard set of `*Aware` interfaces (such as <<beans-beanfactory, BeanFactoryAware>>,
+<<beans-factory-aware, BeanNameAware>>,
+<<context-functionality-messagesource, MessageSourceAware>>,
+<<beans-factory-aware, ApplicationContextAware>>, and so on) are also fully supported.
 
 The `@Bean` annotation supports specifying arbitrary initialization and destruction
 callback methods, much like Spring XML's `init-method` and `destroy-method` attributes
@@ -7096,8 +7131,8 @@ The following example shows how to prevent an automatic destruction callback for
 ----
 ====
 
-Also, with `@Bean` methods, you typically use programmatic JNDI lookups,
-either by using Spring's `JndiTemplate` or `JndiLocatorDelegate` helpers or straight JNDI
+Also, with `@Bean` methods, you typically use programmatic JNDI lookups, either by
+using Spring's `JndiTemplate` or `JndiLocatorDelegate` helpers or straight JNDI
 `InitialContext` usage but not the `JndiObjectFactoryBean` variant (which would force
 you to declare the return type as the `FactoryBean` type instead of the actual target
 type, making it harder to use for cross-reference calls in other `@Bean` methods that
@@ -7130,20 +7165,17 @@ TIP: When you work directly in Java, you can do anything you like with your obje
 not always need to rely on the container lifecycle.
 
 
-
 [[beans-java-specifying-bean-scope]]
 ==== Specifying Bean Scope
 
 Spring includes the `@Scope` annotation so that you can specify the scope of a bean.
-
-
 
 [[beans-java-available-scopes]]
 ===== Using the `@Scope` Annotation
 
 You can specify that your beans defined with the `@Bean` annotation should have a
 specific scope. You can use any of the standard scopes specified in the
-<<beans-factory-scopes,Bean Scopes>> section.
+<<beans-factory-scopes, Bean Scopes>> section.
 
 The default scope is `singleton`, but you can override this with the `@Scope` annotation,
 as the following example shows:
@@ -7156,7 +7188,7 @@ as the following example shows:
 	public class MyConfiguration {
 
 		@Bean
-		**@Scope("prototype")**
+		@Scope("prototype")
 		public Encryptor encryptor() {
 			// ...
 		}
@@ -7168,14 +7200,15 @@ as the following example shows:
 ===== `@Scope` and `scoped-proxy`
 
 Spring offers a convenient way of working with scoped dependencies through
-<<beans-factory-scopes-other-injection,scoped proxies>>. The easiest way to create such
-a proxy when using the XML configuration is the `<aop:scoped-proxy/>` element.
-Configuring your beans in Java with a `@Scope` annotation offers equivalent support with
-the `proxyMode` attribute. The default is no proxy ( `ScopedProxyMode.NO`), but you can
-specify `ScopedProxyMode.TARGET_CLASS` or `ScopedProxyMode.INTERFACES`.
+<<beans-factory-scopes-other-injection, scoped proxies>>. The easiest way to create
+such a proxy when using the XML configuration is the `<aop:scoped-proxy/>` element.
+Configuring your beans in Java with a `@Scope` annotation offers equivalent support
+with the `proxyMode` attribute. The default is no proxy (`ScopedProxyMode.NO`),
+but you can specify `ScopedProxyMode.TARGET_CLASS` or `ScopedProxyMode.INTERFACES`.
 
 If you port the scoped proxy example from the XML reference documentation (see
-<<beans-factory-scopes-other-injection,scoped proxies>>) to our `@Bean` using Java, it resembles the following:
+<<beans-factory-scopes-other-injection, scoped proxies>>) to our `@Bean` using Java,
+it resembles the following:
 
 ====
 [source,java,indent=0]
@@ -7183,7 +7216,7 @@ If you port the scoped proxy example from the XML reference documentation (see
 ----
 	// an HTTP Session-scoped bean exposed as a proxy
 	@Bean
-	**@SessionScope**
+	@SessionScope
 	public UserPreferences userPreferences() {
 		return new UserPreferences();
 	}
@@ -7197,7 +7230,6 @@ If you port the scoped proxy example from the XML reference documentation (see
 	}
 ----
 ====
-
 
 
 [[beans-java-customizing-bean-naming]]
@@ -7223,7 +7255,6 @@ as the following example shows:
 ====
 
 
-
 [[beans-java-bean-aliasing]]
 ==== Bean Aliasing
 
@@ -7239,14 +7270,13 @@ a number of aliases for a bean:
 	@Configuration
 	public class AppConfig {
 
-		@Bean(name = { "dataSource", "subsystemA-dataSource", "subsystemB-dataSource" })
+		@Bean({"dataSource", "subsystemA-dataSource", "subsystemB-dataSource"})
 		public DataSource dataSource() {
 			// instantiate, configure and return DataSource bean...
 		}
 	}
 ----
 ====
-
 
 
 [[beans-java-bean-description]]
@@ -7267,7 +7297,7 @@ annotation, as the following example shows:
 	public class AppConfig {
 
 		@Bean
-		**@Description("Provides a basic example of a bean")**
+		@Description("Provides a basic example of a bean")
 		public Thing thing() {
 			return new Thing();
 		}
@@ -7284,7 +7314,6 @@ annotation, as the following example shows:
 bean definitions. `@Configuration` classes declare beans through public `@Bean` annotated
 methods. Calls to `@Bean` methods on `@Configuration` classes can also be used to define
 inter-bean dependencies. See <<beans-java-basic-concepts>> for a general introduction.
-
 
 
 [[beans-java-injecting-dependencies]]
@@ -7316,8 +7345,8 @@ as having one bean method call another, as the following example shows:
 In the preceding example, `beanOne` receives a reference to `beanTwo` through constructor
 injection.
 
-NOTE: This method of declaring inter-bean dependencies works only when the `@Bean` method is
-declared within a `@Configuration` class. You cannot declare inter-bean dependencies
+NOTE: This method of declaring inter-bean dependencies works only when the `@Bean` method
+is declared within a `@Configuration` class. You cannot declare inter-bean dependencies
 by using plain `@Component` classes.
 
 
@@ -7325,7 +7354,7 @@ by using plain `@Component` classes.
 [[beans-java-method-injection]]
 ==== Lookup Method Injection
 
-As noted earlier, <<beans-factory-method-injection,lookup method injection>> is an
+As noted earlier, <<beans-factory-method-injection, lookup method injection>> is an
 advanced feature that you should use rarely. It is useful in cases where a
 singleton-scoped bean has a dependency on a prototype-scoped bean. Using Java for this
 type of configuration provides a natural means for implementing this pattern. The
@@ -7368,8 +7397,8 @@ the abstract `createCommand()` method is overridden in such a way that it looks 
 
 	@Bean
 	public CommandManager commandManager() {
-		// return new anonymous implementation of CommandManager with command() overridden
-		// to return a new prototype Command object
+		// return new anonymous implementation of CommandManager with createCommand()
+		// overridden to return a new prototype Command object
 		return new CommandManager() {
 			protected Command createCommand() {
 				return asyncCommand();
@@ -7378,7 +7407,6 @@ the abstract `createCommand()` method is overridden in such a way that it looks 
 	}
 ----
 ====
-
 
 
 [[beans-java-further-information-java-config]]
@@ -7423,12 +7451,15 @@ where the magic comes in: All `@Configuration` classes are subclassed at startup
 with `CGLIB`. In the subclass, the child method checks the container first for any
 cached (scoped) beans before it calls the parent method and creates a new instance.
 
-NOTE: As of Spring 3.2, it is no longer necessary to add CGLIB to your classpath because
-CGLIB classes have been repackaged under `org.springframework.cglib` and included directly
-within the spring-core JAR.
-
 NOTE: The behavior could be different according to the scope of your bean. We are talking
 about singletons here.
+
+[NOTE]
+====
+As of Spring 3.2, it is no longer necessary to add CGLIB to your classpath because CGLIB
+classes have been repackaged under `org.springframework.cglib` and included directly
+within the spring-core JAR.
+====
 
 [TIP]
 ====
@@ -7450,7 +7481,6 @@ to exclusively rely on dependency injection at the constructor or method level t
 
 Spring's Java-based configuration feature lets you compose annotations, which can reduce
 the complexity of your configuration.
-
 
 
 [[beans-java-using-import]]
@@ -7522,7 +7552,7 @@ issue, because no compiler is involved, and you can declare
 When using `@Configuration` classes, the Java compiler places constraints on
 the configuration model, in that references to other beans must be valid Java syntax.
 
-Fortunately, solving this problem is simple. As <<beans-java-dependencies,we already discussed>>,
+Fortunately, solving this problem is simple. As <<beans-java-dependencies, we already discussed>>,
 a `@Bean` method can have an arbitrary number of parameters that describe the bean
 dependencies. Consider the following more real-world scenario with several `@Configuration`
 classes, each depending on beans declared in the others:
@@ -7747,7 +7777,6 @@ or as `@DependsOn` certain other beans (making sure that specific other beans ar
 created before the current bean, beyond what the latter's direct dependencies imply).
 
 
-
 [[beans-java-conditional]]
 ==== Conditionally Include `@Configuration` Classes or `@Bean` Methods
 
@@ -7790,8 +7819,8 @@ method that returns `true` or `false`. For example, the following listing shows 
 ----
 ====
 
-See the {api-spring-framework}/context/annotation/Conditional.html[
-`@Conditional` Javadoc] for more detail.
+See the {api-spring-framework}/context/annotation/Conditional.html[`@Conditional`]
+javadoc for more detail.
 
 
 [[beans-java-combining]]
@@ -7893,10 +7922,10 @@ jdbc.password=
 ====
 
 NOTE: In `system-test-config.xml` file, the `AppConfig` `<bean/>` does not declare an `id`
-element. While it would be acceptable to do so, it is unnecessary, given that no other
-bean ever refers to it, and it is unlikely to be explicitly fetched from
-the container by name. Similarly, the `DataSource` bean is only ever autowired
-by type, so an explicit bean `id` is not strictly required.
+element. While it would be acceptable to do so, it is unnecessary, given that no other bean
+ever refers to it, and it is unlikely to be explicitly fetched from the container by name.
+Similarly, the `DataSource` bean is only ever autowired by type, so an explicit bean `id`
+is not strictly required.
 --
 
 .[[beans-java-combining-xml-centric-component-scan]] Using <context:component-scan/> to pick up `@Configuration` classes
@@ -8001,8 +8030,8 @@ jdbc.password=
 
 The {api-spring-framework}/core/env/Environment.html[`Environment`] interface
 is an abstraction integrated in the container that models two key
-aspects of the application environment: <<beans-definition-profiles,profiles>>
-and <<beans-property-source-abstraction,properties>>.
+aspects of the application environment: <<beans-definition-profiles, profiles>>
+and <<beans-property-source-abstraction, properties>>.
 
 A profile is a named, logical group of bean definitions to be registered with the
 container only if the given profile is active. Beans may be assigned to a profile
@@ -8081,9 +8110,7 @@ If we generalize the use case shown in the preceding example of environment-spec
 definitions, we end up with the need to register certain bean definitions in
 certain contexts but not in others. You could say that you want to register a
 certain profile of bean definitions in situation A and a different profile in
-situation B. We start by updating our configuration to reflect
-this need.
-
+situation B. We start by updating our configuration to reflect this need.
 
 
 [[beans-definition-profiles-java]]
@@ -8099,7 +8126,7 @@ can rewrite the `dataSource` configuration as follows:
 [subs="verbatim,quotes"]
 ----
 	@Configuration
-	**@Profile("development")**
+	@Profile("development")
 	public class StandaloneDataConfig {
 
 		@Bean
@@ -8117,7 +8144,7 @@ can rewrite the `dataSource` configuration as follows:
 [subs="verbatim,quotes"]
 ----
 	@Configuration
-	**@Profile("production")**
+	@Profile("production")
 	public class JndiDataConfig {
 
 		@Bean(destroyMethod="")
@@ -8141,13 +8168,13 @@ profile expressions:
 
 * `!`: A logical "`not`" of the profile
 * `&`: A logical "`and`" of the profiles
-* `|`_ A logical "`or`" of the profiles
+* `|`: A logical "`or`" of the profiles
 
 NOTE: You cannot mix the `&` and `|` operators without using parentheses. For example,
 `production & us-east | eu-central` is not a valid expression. It must be expressed as
 `production & (us-east | eu-central)`.
 
-You can use `@Profile` as a <<beans-meta-annotations,meta-annotation>> for the purpose
+You can use `@Profile` as a <<beans-meta-annotations, meta-annotation>> for the purpose
 of creating a custom composed annotation. The following example defines a custom
 `@Production` annotation that you can use as a drop-in replacement for
 `@Profile("production")`:
@@ -8158,7 +8185,7 @@ of creating a custom composed annotation. The following example defines a custom
 ----
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)
-	**@Profile("production")**
+	@Profile("production")
 	public @interface Production {
 	}
 ----
@@ -8224,7 +8251,6 @@ the same (for example, all of the variants have no-arg factory methods), this is
 way to represent such an arrangement in a valid Java class in the first place
 (since there can only be one method of a particular name and argument signature).
 ====
-
 
 
 [[beans-definition-profiles-xml]]
@@ -8356,9 +8382,9 @@ In addition, you can also declaratively activate profiles through the
 `spring.profiles.active` property, which may be specified through system environment
 variables, JVM system properties, servlet context parameters in `web.xml`, or even as an
 entry in JNDI (see <<beans-property-source-abstraction>>). In integration tests, active
-profiles can be declared by using the `@ActiveProfiles` annotation in the `spring-test` module
-(see <<testing.adoc#testcontext-ctx-management-env-profiles,
-Context configuration with environment profiles>>).
+profiles can be declared by using the `@ActiveProfiles` annotation in the `spring-test`
+module (see <<testing.adoc#testcontext-ctx-management-env-profiles,
+context configuration with environment profiles>>).
 
 Note that profiles are not an "`either-or`" proposition. You can activate multiple
 profiles at once. Programmatically, you can provide multiple profile names to the
@@ -8385,7 +8411,6 @@ as the following example shows:
 ====
 
 
-
 [[beans-definition-profiles-default]]
 ==== Default Profile
 
@@ -8397,7 +8422,7 @@ following example:
 [subs="verbatim,quotes"]
 ----
 	@Configuration
-	**@Profile("default")**
+	@Profile("default")
 	public class DefaultDataConfig {
 
 		@Bean
@@ -8450,10 +8475,10 @@ NOTE: These default property sources are present for `StandardEnvironment`, for 
 applications. {api-spring-framework}/web/context/support/StandardServletEnvironment.html[`StandardServletEnvironment`]
 is populated with additional default property sources including servlet config and servlet
 context parameters. It can optionally enable a {api-spring-framework}/jndi/JndiPropertySource.html[`JndiPropertySource`].
-See the Javadoc for details.
+See the javadoc for details.
 
 Concretely, when you use the `StandardEnvironment`, the call to `env.containsProperty("my-property")`
-returns true if a `my-property` system property or `my-propertyi` environment variable is present at
+returns true if a `my-property` system property or `my-property` environment variable is present at
 runtime.
 
 [TIP]
@@ -8514,7 +8539,7 @@ a call to `testBean.getName()` returns `myTestBean`:
 [subs="verbatim,quotes"]
 ----
    @Configuration
-   **@PropertySource("classpath:/com/myco/app.properties")**
+   @PropertySource("classpath:/com/myco/app.properties")
    public class AppConfig {
 
 	   @Autowired
@@ -8595,6 +8620,7 @@ property is defined, as long as it is available in the `Environment`:
 
 
 
+
 [[context-load-time-weaver]]
 == Registering a `LoadTimeWeaver`
 
@@ -8630,17 +8656,19 @@ Alternatively, for XML configuration, you can use the `context:load-time-weaver`
 Once configured for the `ApplicationContext`, any bean within that `ApplicationContext`
 may implement `LoadTimeWeaverAware`, thereby receiving a reference to the load-time
 weaver instance. This is particularly useful in combination with
-<<data-access.adoc#orm-jpa,Spring's JPA support>> where load-time weaving may be necessary
-for JPA class transformation.
-Consult the {api-spring-framework}/orm/jpa/LocalContainerEntityManagerFactoryBean.html[`LocalContainerEntityManagerFactoryBean` Javadoc] for more detail. For more on
-AspectJ load-time weaving, see <<aop-aj-ltw>>.
+<<data-access.adoc#orm-jpa, Spring's JPA support>> where load-time weaving may be
+necessary for JPA class transformation.
+Consult the
+{api-spring-framework}/orm/jpa/LocalContainerEntityManagerFactoryBean.html[`LocalContainerEntityManagerFactoryBean`]
+javadoc for more detail. For more on AspectJ load-time weaving, see <<aop-aj-ltw>>.
+
 
 
 
 [[context-introduction]]
 == Additional Capabilities of the `ApplicationContext`
 
-As discussed in the <<beans,chapter introduction>>, the `org.springframework.beans.factory`
+As discussed in the <<beans, chapter introduction>>, the `org.springframework.beans.factory`
 package provides basic functionality for managing and manipulating beans, including in a
 programmatic way. The `org.springframework.context` package adds the
 {api-spring-framework}/context/ApplicationContext.html[`ApplicationContext`]
@@ -8877,7 +8905,8 @@ file format but is more flexible than the standard JDK based
 `ResourceBundleMessageSource` implementation. In particular, it allows for reading
 files from any Spring resource location (not only from the classpath) and supports hot
 reloading of bundle property files (while efficiently caching them in between).
-See the {api-spring-framework}/context/support/ReloadableResourceBundleMessageSource.html[`ReloadableResourceBundleMessageSource` Javadoc] for details.
+See the {api-spring-framework}/context/support/ReloadableResourceBundleMessageSource.html[`ReloadableResourceBundleMessageSource`]
+javadoc for details.
 
 
 
@@ -8891,7 +8920,7 @@ class and the `ApplicationListener` interface. If a bean that implements the
 Essentially, this is the standard Observer design pattern.
 
 TIP: As of Spring 4.2, the event infrastructure has been significantly improved and offers
-an <<context-functionality-events-annotation,annotation-based model>> as well as the
+an <<context-functionality-events-annotation, annotation-based model>> as well as the
 ability to publish any arbitrary event (that is, an object that does not necessarily
 extend from `ApplicationEvent`). When such an object is published, we wrap it in an
 event for you.
@@ -9033,7 +9062,7 @@ synchronously. This means that the `publishEvent()` method blocks until all list
 finished processing the event. One advantage of this synchronous and single-threaded
 approach is that, when a listener receives an event, it operates inside the transaction
 context of the publisher if a transaction context is available. If another strategy for
-event publication becomes necessary, See the Javadoc for Spring's
+event publication becomes necessary, See the javadoc for Spring's
 {api-spring-framework}/context/event/ApplicationEventMulticaster.html[`ApplicationEventMulticaster`] interface.
 
 The following example shows the bean definitions used to register and configure each of
@@ -9072,7 +9101,6 @@ http://projects.spring.io/spring-integration/[Spring Integration] project provid
 complete support for building lightweight,
 http://www.enterpriseintegrationpatterns.com[pattern-oriented], event-driven
 architectures that build upon the well-known Spring programming model.
-
 
 
 [[context-functionality-events-annotation]]
@@ -9122,12 +9150,12 @@ following example shows how to do so:
 ----
 ====
 
-It is also possible to add additional runtime filtering by using the `condition` attribute of the
-annotation that defines a <<expressions,`SpEL` expression>> , which should match to actually
-invoke the method for a particular event.
+It is also possible to add additional runtime filtering by using the `condition` attribute
+of the annotation that defines a <<expressions, `SpEL` expression>> , which should match
+to actually invoke the method for a particular event.
 
-The following example shows how our notifier can be rewritten to be invoked only if the `content` attribute
-of the event is equal to `my-event`:
+The following example shows how our notifier can be rewritten to be invoked only if the
+`content` attribute of the event is equal to `my-event`:
 
 ====
 [source,java,indent=0]
@@ -9184,21 +9212,20 @@ method signature to return the event that should be published, as the following 
 ----
 ====
 
-NOTE: This feature is not supported for <<context-functionality-events-async,asynchronous
-listeners>>.
+NOTE: This feature is not supported for
+<<context-functionality-events-async, asynchronous listeners>>.
 
-This new method publishes a new `ListUpdateEvent` for every `BlackListEvent` handled
-by the method above. If you need to publish several events, you can return a `Collection` of
-events instead.
-
+This new method publishes a new `ListUpdateEvent` for every `BlackListEvent` handled by the
+method above. If you need to publish several events, you can return a `Collection` of events
+instead.
 
 
 [[context-functionality-events-async]]
 ==== Asynchronous Listeners
 
 If you want a particular listener to process events asynchronously, you can reuse the
-<<integration.adoc#scheduling-annotation-support-async,regular `@Async` support>>. The
-following example shows how to do so:
+<<integration.adoc#scheduling-annotation-support-async, regular `@Async` support>>.
+The following example shows how to do so:
 
 ====
 [source,java,indent=0]
@@ -9217,9 +9244,9 @@ Be aware of the following limitations when using asynchronous events:
 * If the event listener throws an `Exception`, it is not propagated to the caller
   See `AsyncUncaughtExceptionHandler` for more details.
 * Such event listener cannot send replies. If you need to send another event as the
-  result of the processing, inject {api-spring-framework}/aop/interceptor/AsyncUncaughtExceptionHandler.html[`ApplicationEventPublisher`] to send the event
-  manually.
-
+  result of the processing, inject
+  {api-spring-framework}/aop/interceptor/AsyncUncaughtExceptionHandler.html[`ApplicationEventPublisher`]
+  to send the event manually.
 
 
 [[context-functionality-events-order]]
@@ -9239,7 +9266,6 @@ annotation to the method declaration, as the following example shows:
 	}
 ----
 ====
-
 
 
 [[context-functionality-events-generics]]
@@ -9266,8 +9292,8 @@ parameters on which the event listener filters (that is, something like
 `class PersonCreatedEvent extends EntityCreatedEvent<Person> { ... }`).
 
 In certain circumstances, this may become quite tedious if all events follow the same
-structure (as should be the case for the event in the preceding example). In such a case, you can
-implement `ResolvableTypeProvider` to guide the framework beyond what the runtime
+structure (as should be the case for the event in the preceding example). In such a case,
+you can implement `ResolvableTypeProvider` to guide the framework beyond what the runtime
 environment provides. The following event shows how to do so:
 
 ====
@@ -9282,8 +9308,7 @@ environment provides. The following event shows how to do so:
 
 		@Override
 		public ResolvableType getResolvableType() {
-			return ResolvableType.forClassWithGenerics(getClass(),
-					ResolvableType.forInstance(getSource()));
+			return ResolvableType.forClassWithGenerics(getClass(), ResolvableType.forInstance(getSource()));
 		}
 	}
 ----
@@ -9297,12 +9322,11 @@ an event.
 [[context-functionality-resources]]
 === Convenient Access to Low-level Resources
 
-For optimal usage and understanding of application contexts, you should
-familiarize yourself with Spring's `Resource` abstraction, as described in
-<<resources>>.
+For optimal usage and understanding of application contexts, you should familiarize
+yourself with Spring's `Resource` abstraction, as described in <<resources>>.
 
-An application context is a `ResourceLoader`, which can be used to load `Resource` objects. A
-`Resource` is essentially a more feature rich version of the JDK `java.net.URL` class.
+An application context is a `ResourceLoader`, which can be used to load `Resource` objects.
+A `Resource` is essentially a more feature rich version of the JDK `java.net.URL` class.
 In fact, the implementations of the `Resource` wrap an instance of `java.net.URL`, where
 appropriate. A `Resource` can obtain low-level resources from almost any location in a
 transparent fashion, including from the classpath, a filesystem location, anywhere
@@ -9312,19 +9336,18 @@ specific and appropriate to the actual application context type.
 
 You can configure a bean deployed into the application context to implement the special
 callback interface, `ResourceLoaderAware`, to be automatically called back at
-initialization time with the application context itself passed in as the
-`ResourceLoader`. You can also expose properties of type `Resource`, to be used to
-access static resources. They are injected into it like any other properties. You
-can specify those `Resource` properties as simple `String` paths and rely on a special
-JavaBean `PropertyEditor` (which is automatically registered by the context) to convert
-those text strings to actual `Resource` objects when the bean is deployed.
+initialization time with the application context itself passed in as the `ResourceLoader`.
+You can also expose properties of type `Resource`, to be used to access static resources.
+They are injected into it like any other properties. You can specify those `Resource`
+properties as simple `String` paths and rely on automatic conversion from those text
+strings to actual `Resource` objects when the bean is deployed.
 
 The location path or paths supplied to an `ApplicationContext` constructor are actually
-resource strings and, in simple form, are treated appropriately according to the specific context
-implementation. For example `ClassPathXmlApplicationContext` treats a simple location path as a
-classpath location. You can also use location paths (resource strings) with special
-prefixes to force loading of definitions from the classpath or a URL, regardless of the
-actual context type.
+resource strings and, in simple form, are treated appropriately according to the specific
+context implementation. For example `ClassPathXmlApplicationContext` treats a simple
+location path as a classpath location. You can also use location paths (resource strings)
+with special prefixes to force loading of definitions from the classpath or a URL,
+regardless of the actual context type.
 
 
 
@@ -9358,9 +9381,9 @@ exist, the listener uses `/WEB-INF/applicationContext.xml` as a default. When th
 parameter does exist, the listener separates the `String` by using predefined
 delimiters (comma, semicolon, and whitespace) and uses the values as locations where
 application contexts are searched. Ant-style path patterns are supported as well.
-Examples are `/WEB-INF/{asterisk}Context.xml` (for all files with names that end with `Context.xml`
-and that reside in the `WEB-INF` directory) and `/WEB-INF/**/*Context.xml`( for all such files
-in any subdirectory of `WEB-INF`).
+Examples are `/WEB-INF/{asterisk}Context.xml` (for all files with names that end with
+`Context.xml` and that reside in the `WEB-INF` directory) and `/WEB-INF/**/*Context.xml`
+(for all such files in any subdirectory of `WEB-INF`).
 
 
 
@@ -9371,19 +9394,19 @@ It is possible to deploy a Spring `ApplicationContext` as a RAR file, encapsulat
 context and all of its required bean classes and library JARs in a Java EE RAR deployment
 unit. This is the equivalent of bootstrapping a stand-alone `ApplicationContext` (only hosted
 in Java EE environment) being able to access the Java EE servers facilities. RAR deployment
-is a more natural alternative to a scenario of deploying a headless WAR file -- in effect, a WAR
-file without any HTTP entry points that is used only for bootstrapping a Spring
+is a more natural alternative to a scenario of deploying a headless WAR file -- in effect,
+a WAR file without any HTTP entry points that is used only for bootstrapping a Spring
 `ApplicationContext` in a Java EE environment.
 
 RAR deployment is ideal for application contexts that do not need HTTP entry points but
 rather consist only of message endpoints and scheduled jobs. Beans in such a context can
 use application server resources such as the JTA transaction manager and JNDI-bound JDBC
-`DataSource` instances and JMS `ConnectionFactory` instances and can also register with the
-platform's JMX server -- all through Spring's standard transaction management and JNDI
-and JMX support facilities. Application components can also interact with the
-application server's JCA `WorkManager` through Spring's `TaskExecutor` abstraction.
+`DataSource` instances and JMS `ConnectionFactory` instances and can also register with
+the platform's JMX server -- all through Spring's standard transaction management and JNDI
+and JMX support facilities. Application components can also interact with the application
+server's JCA `WorkManager` through Spring's `TaskExecutor` abstraction.
 
-See the Javadoc of the
+See the javadoc of the
 {api-spring-framework}/jca/context/SpringContextResourceAdapter.html[`SpringContextResourceAdapter`]
 class for the configuration details involved in RAR deployment.
 
@@ -9394,19 +9417,20 @@ all application classes into a RAR file (which is a standard JAR file with a dif
 file extension).
 .Add all required library JARs into the root of the RAR archive.
 .Add a
-`META-INF/ra.xml` deployment descriptor (as shown in the {api-spring-framework}/jca/context/SpringContextResourceAdapter.html[Javadoc for `SpringContextResourceAdapter`])
+`META-INF/ra.xml` deployment descriptor (as shown in the {api-spring-framework}/jca/context/SpringContextResourceAdapter.html[javadoc for `SpringContextResourceAdapter`])
 and the corresponding Spring XML bean definition file(s) (typically
 `META-INF/applicationContext.xml).
 . Drop the resulting RAR file into your
 application server's deployment directory.
 
-NOTE: Such RAR deployment units are usually self-contained. They do not expose components to
-the outside world, not even to other modules of the same application. Interaction with a
+NOTE: Such RAR deployment units are usually self-contained. They do not expose components
+to the outside world, not even to other modules of the same application. Interaction with a
 RAR-based `ApplicationContext` usually occurs through JMS destinations that it shares with
 other modules. A RAR-based `ApplicationContext` may also, for example, schedule some jobs
 or react to new files in the file system (or the like). If it needs to allow synchronous
-access from the outside, it could (for example) export RMI endpoints, which may
-be used by other application modules on the same machine.
+access from the outside, it could (for example) export RMI endpoints, which may be used
+by other application modules on the same machine.
+
 
 
 
@@ -9455,11 +9479,11 @@ by convention (that is, by bean name or by bean type -- in particular, post-proc
 while a plain `DefaultListableBeanFactory` is agnostic about any special beans.
 
 For many extended container features, such as annotation processing and AOP proxying,
-the <<beans-factory-extension-bpp,`BeanPostProcessor` extension point>> is essential.
+the <<beans-factory-extension-bpp, `BeanPostProcessor` extension point>> is essential.
 If you use only a plain `DefaultListableBeanFactory`, such post-processors do not
 get detected and activated by default. This situation could be confusing, because
-nothing is actually wrong with your bean configuration. Rather,  in such a scenario, the
-container needs to be fully bootstrapped through additional setup.
+nothing is actually wrong with your bean configuration. Rather,  in such a scenario,
+the container needs to be fully bootstrapped through additional setup.
 
 The following table lists features provided by the `BeanFactory` and
 `ApplicationContext` interfaces and implementations.
@@ -9539,8 +9563,11 @@ why the various `ApplicationContext` variants are preferred over a plain
 relying on `BeanFactoryPostProcessor` and `BeanPostProcessor` instances for extended
 container functionality in a typical enterprise setup.
 
-NOTE: An `AnnotationConfigApplicationContext` has all common annotation post-processors
+[NOTE]
+====
+An `AnnotationConfigApplicationContext` has all common annotation post-processors
 registered and may bring in additional processors underneath the
 covers through configuration annotations, such as `@EnableTransactionManagement`.
 At the abstraction level of Spring's annotation-based configuration model,
 the notion of bean post-processors becomes a mere internal container detail.
+====

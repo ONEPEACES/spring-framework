@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -463,8 +463,8 @@ public class HttpInvokerTests {
 		ITestBean proxy = (ITestBean) pfb.getObject();
 
 		// shouldn't go through to remote service
-		assertTrue(proxy.toString().indexOf("HTTP invoker") != -1);
-		assertTrue(proxy.toString().indexOf(serviceUrl) != -1);
+		assertTrue(proxy.toString().contains("HTTP invoker"));
+		assertTrue(proxy.toString().contains(serviceUrl));
 		assertEquals(proxy.hashCode(), proxy.hashCode());
 		assertTrue(proxy.equals(proxy));
 
