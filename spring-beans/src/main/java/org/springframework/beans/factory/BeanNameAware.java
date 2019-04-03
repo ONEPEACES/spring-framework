@@ -23,6 +23,8 @@ package org.springframework.beans.factory;
  * brittle dependence on external configuration, as well as a possibly
  * unnecessary dependence on a Spring API.
  *
+ * <p>具体实现者有意识的想要知道其在bean工厂中的名字.值得注意的是不推荐对象经常依赖其实体名.
+ *
  * <p>For a list of all bean lifecycle methods, see the
  * {@link BeanFactory BeanFactory javadocs}.
  *

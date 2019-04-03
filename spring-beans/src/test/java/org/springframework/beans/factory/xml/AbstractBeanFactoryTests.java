@@ -38,6 +38,7 @@ import static org.junit.Assert.*;
 
 /**
  * Subclasses must initialize the bean factory and any other variables they need.
+ * 子类必须实例化这个实体工厂并且初始化其需要的变量
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

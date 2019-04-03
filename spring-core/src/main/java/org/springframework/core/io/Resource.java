@@ -50,7 +50,6 @@ import org.springframework.lang.Nullable;
  * @see InputStreamResource
  */
 public interface Resource extends InputStreamSource {
-
 	/**
 	 * Determine whether this resource actually exists in physical form.
 	 * <p>This method performs a definitive existence check, whereas the

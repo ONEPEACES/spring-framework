@@ -71,6 +71,19 @@ public class XmlBeanDefinitionReaderTests {
 		testBeanDefinitions(registry);
 	}
 
+	/**
+	 * 解析XML配置文件成对应的BeanDefinition流程
+	 */
+	@Test
+	public void withFreshInputStream() {
+		// 获取BeanDefinitionRegistry，即获取注册器
+		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
+		// 加载xml资源到Resource
+		Resource resource = new ClassPathResource("test.xml", getClass());
+		new XmlBeanDefinitionReader(registry).loadBeanDefinitions(resource);
+		testBeanDefinitions(registry);
+	}
+
 	@Test
 	public void withWildcardImport() {
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
@@ -93,14 +106,6 @@ public class XmlBeanDefinitionReaderTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(registry);
 		reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_DTD);
 		reader.loadBeanDefinitions(resource);
-		testBeanDefinitions(registry);
-	}
-
-	@Test
-	public void withFreshInputStream() {
-		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
-		Resource resource = new ClassPathResource("test.xml", getClass());
-		new XmlBeanDefinitionReader(registry).loadBeanDefinitions(resource);
 		testBeanDefinitions(registry);
 	}
 
