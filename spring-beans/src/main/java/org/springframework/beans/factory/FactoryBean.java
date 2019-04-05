@@ -24,18 +24,29 @@ import org.springframework.lang.Nullable;
  * interface, it is used as a factory for an object to expose, not directly as a
  * bean instance that will be exposed itself.
  *
+ * <p>FactoryBean作为独立管理Bean对象的一个对象，如果一个Bean实体实现了这个接口，那么这个Bean实体
+ * 会作为一个一个工厂实体而存在，而不是作为一个bean实例而暴露其自身。
+ *
  * <p><b>NB: A bean that implements this interface cannot be used as a normal bean.</b>
  * A FactoryBean is defined in a bean style, but the object exposed for bean
  * references ({@link #getObject()}) is always the object that it creates.
+ *
+ * <p>FactoryBean虽然已Bean方式定义，但是通过getObject方法获取到的对象永远是其创建的对象，因此实现了FactoryBean接口的Bean对象
+ * 不能被当做普通的Bean.
  *
  * <p>FactoryBeans can support singletons and prototypes, and can either create
  * objects lazily on demand or eagerly on startup. The {@link SmartFactoryBean}
  * interface allows for exposing more fine-grained behavioral metadata.
  *
+ * <p>FactoryBean能够支持单例和多例，能够实现懒加载或者立即加载。
+ *
  * <p>This interface is heavily used within the framework itself, for example for
  * the AOP {@link org.springframework.aop.framework.ProxyFactoryBean} or the
  * {@link org.springframework.jndi.JndiObjectFactoryBean}. It can be used for
  * custom components as well; however, this is only common for infrastructure code.
+ *
+ * <p>这个接口被Spring框架严重耦合，譬如ProxyFactoryBean或者JndiObjectFactoryBean。
+ * 同样能够被客户组件使用，仅仅使用于基础设施代码。
  *
  * <p><b>{@code FactoryBean} is a programmatic contract. Implementations are not
  * supposed to rely on annotation-driven injection or other reflective facilities.</b>
@@ -43,10 +54,15 @@ import org.springframework.lang.Nullable;
  * the bootstrap process, even ahead of any post-processor setup. If you need access
  * other beans, implement {@link BeanFactoryAware} and obtain them programmatically.
  *
+ * <p>FactoryBean是一个编程协议，具体实现不支持注解驱动的注入或者其他反射因素。
+ *
  * <p>Finally, FactoryBean objects participate in the containing BeanFactory's
  * synchronization of bean creation. There is usually no need for internal
  * synchronization other than for purposes of lazy initialization within the
  * FactoryBean itself (or the like).
+ *
+ * <p>FactoryBean对象会参与包含在BeanFactory中Bean对象创建的同步，没必要使用内部的同步出于FactoryBean执行懒加载
+ * 过程的原因。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

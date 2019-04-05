@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 /**
  * Simple interface for objects that are sources for an {@link InputStream}.
+ * Resource体系顶层接口,获取资源输入流,从而读取其字节流内容.
  *
  * <p>This is the base interface for Spring's more extensive {@link Resource} interface.
  *

@@ -184,6 +184,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 	private static final Log logger = LogFactory.getLog(PathMatchingResourcePatternResolver.class);
 
+
 	@Nullable
 	private static Method equinoxResolveMethod;
 
@@ -318,6 +319,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		if (path.startsWith("/")) {
 			path = path.substring(1);
 		}
+		// 执行真正的查找所有classpath资源的方法
 		Set<Resource> result = doFindAllClassPathResources(path);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Resolved classpath location [" + location + "] to resources " + result);

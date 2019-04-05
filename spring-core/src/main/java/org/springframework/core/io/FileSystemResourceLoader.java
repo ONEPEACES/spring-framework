@@ -21,6 +21,8 @@ package org.springframework.core.io;
  * file system resources rather than as class path resources
  * (the latter is {@link DefaultResourceLoader}'s default strategy).
  *
+ * <p>解析普通路径到文件资源.
+ *
  * <p><b>NOTE:</b> Plain paths will always be interpreted as relative
  * to the current VM working directory, even if they start with a slash.
  * (This is consistent with the semantics in a Servlet container.)

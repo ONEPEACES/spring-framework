@@ -127,6 +127,8 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> Map<Resource, T> getResourceCache(Class<T> valueType) {
+		// 如果valueType作为key的值在resourceCaches中不为空，则直接返回value
+		// 否则重新生成value返回(即这里的new ConcurrentHashMap()).
 		return (Map<Resource, T>) this.resourceCaches.computeIfAbsent(valueType, key -> new ConcurrentHashMap<>());
 	}
 

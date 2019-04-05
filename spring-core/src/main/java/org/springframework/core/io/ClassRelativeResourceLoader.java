@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 /**
  * {@link ResourceLoader} implementation that interprets plain resource paths
  * as relative to a given {@code java.lang.Class}.
+ * 将普通资源解析为对应的Class对象
  *
  * @author Juergen Hoeller
  * @since 3.0
@@ -52,6 +53,7 @@ public class ClassRelativeResourceLoader extends DefaultResourceLoader {
 	/**
 	 * ClassPathResource that explicitly expresses a context-relative path
 	 * through implementing the ContextResource interface.
+	 * <p>作为一个classpath资源，并且清晰的表明其上下文相关路径
 	 */
 	private static class ClassRelativeContextResource extends ClassPathResource implements ContextResource {
 

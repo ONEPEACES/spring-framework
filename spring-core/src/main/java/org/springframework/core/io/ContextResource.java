@@ -31,6 +31,7 @@ public interface ContextResource extends Resource {
 
 	/**
 	 * Return the path within the enclosing 'context'.
+	 * <p>返回封闭的context的路径
 	 * <p>This is typically path relative to a context-specific root directory,
 	 * e.g. a ServletContext root or a PortletContext root.
 	 */

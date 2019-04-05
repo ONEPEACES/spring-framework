@@ -21,6 +21,7 @@ import org.springframework.lang.Nullable;
 /**
  * Interface to be implemented by bean metadata elements
  * that carry a configuration source object.
+ * <p>用来返回配置资源的对象
  *
  * @author Juergen Hoeller
  * @since 2.0
